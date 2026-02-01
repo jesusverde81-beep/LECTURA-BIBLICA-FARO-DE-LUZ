@@ -67,7 +67,7 @@
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⚠️ Abre los videos de arriba para activar la confirmación.
+      ⚠️ Debes abrir AMBOS videos de hoy para activar la confirmación.
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
@@ -124,6 +124,10 @@
     59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYkA"
   };
 
+  // Variables para controlar la doble verificación
+  let clickVideo1 = false;
+  let clickVideo2 = false;
+
   window.onload = function() {
     const nombre = localStorage.getItem("nombreBiblia");
     if (nombre) mostrarPanel(nombre);
@@ -170,22 +174,38 @@
     const contenedor = document.getElementById("contenedor-videos");
     contenedor.innerHTML = "";
     
+    // Resetear verificación al cambiar de día
+    clickVideo1 = false;
+    clickVideo2 = false;
+    document.getElementById("btnConfirmar").disabled = true;
+    document.getElementById("msg-espera").classList.remove("hidden");
+    document.getElementById("confirmacion-ok").classList.add("hidden");
+
     let vA = (dia * 2) - 1;
     let vB = (dia * 2);
 
-    [vA, vB].forEach(num => {
+    const videos = [vA, vB];
+    videos.forEach((num, index) => {
       const a = document.createElement("a");
       a.className = "boton btn-video";
       a.target = "_blank";
       a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
       a.innerHTML = "📖 Escuchar Día " + num;
-      a.onclick = () => { setTimeout(() => { document.getElementById("btnConfirmar").disabled = false; document.getElementById("msg-espera").classList.add("hidden"); }, 3000); };
+      
+      a.onclick = () => {
+        if (index === 0) clickVideo1 = true;
+        if (index === 1) clickVideo2 = true;
+        
+        // Solo habilitar si ambos fueron pulsados
+        if (clickVideo1 && clickVideo2) {
+          setTimeout(() => { 
+            document.getElementById("btnConfirmar").disabled = false; 
+            document.getElementById("msg-espera").classList.add("hidden"); 
+          }, 1000);
+        }
+      };
       contenedor.appendChild(a);
     });
-
-    document.getElementById("btnConfirmar").disabled = true;
-    document.getElementById("msg-espera").classList.remove("hidden");
-    document.getElementById("confirmacion-ok").classList.add("hidden");
   }
 
   function enviarRegistro() {
