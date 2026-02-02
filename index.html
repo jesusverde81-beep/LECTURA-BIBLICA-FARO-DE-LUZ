@@ -67,7 +67,7 @@
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⚠️ Abre los videos para activar la confirmación.
+      ⚠️ Debes abrir los videos para iniciar tu tiempo de lectura.
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
@@ -91,13 +91,13 @@
 
 <script>
   let submitted = false;
+  let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
   const baseVideos = {
     1: "https://youtu.be/diUaiAJ9OP0", 2: "https://youtu.be/ZOELPNr_DpI",
     3: "https://youtu.be/idKTQdIoxbY", 4: "https://youtu.be/qd49LBB8tGI",
     5: "https://youtu.be/8l8DqqI_gxE", 6: "https://youtu.be/jSbPQ_CbCNo",
     7: "https://youtu.be/jfIgrT7vrqI", 8: "https://youtu.be/oNzleX15zy4"
-    // Puedes seguir agregando más videos aquí...
   };
 
   window.onload = function() {
@@ -145,6 +145,12 @@
     const contenedor = document.getElementById("contenedor-videos");
     contenedor.innerHTML = "";
     
+    // Reiniciar estado del botón al cambiar de día
+    document.getElementById("btnConfirmar").disabled = true;
+    document.getElementById("msg-espera").classList.remove("hidden");
+    document.getElementById("msg-espera").innerText = "⚠️ Abre los videos para iniciar tu tiempo de lectura.";
+    timerActivo = false;
+
     let vA = (dia * 2) - 1;
     let vB = (dia * 2);
 
@@ -154,11 +160,18 @@
       a.target = "_blank";
       a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
       a.innerHTML = "📖 Escuchar Día " + num;
+      
       a.onclick = () => { 
-        setTimeout(() => { 
-          document.getElementById("btnConfirmar").disabled = false; 
-          document.getElementById("msg-espera").classList.add("hidden"); 
-        }, 1000); 
+        if (!timerActivo) {
+          timerActivo = true;
+          document.getElementById("msg-espera").innerText = "⏳ Tiempo de lectura en curso... Espera 5 min para confirmar.";
+          
+          // CRONÓMETRO DE 5 MINUTOS (300,000 milisegundos)
+          setTimeout(() => { 
+            document.getElementById("btnConfirmar").disabled = false; 
+            document.getElementById("msg-espera").classList.add("hidden"); 
+          }, 300000); 
+        }
       };
       contenedor.appendChild(a);
     });
@@ -167,11 +180,9 @@
   function enviarRegistro() {
     const nombre = localStorage.getItem("nombreBiblia");
     const dia = document.getElementById("diaCalendario").value;
-    
     document.getElementById("entry_nombre").value = nombre;
     document.getElementById("entry_fecha").value = dia + " de Feb";
     document.getElementById("entry_estado").value = "COMPLETADO";
-    
     submitted = true;
     document.getElementById("googleForm").submit();
   }
