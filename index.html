@@ -67,7 +67,7 @@
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⚠️ Debes abrir los videos para iniciar tu tiempo de lectura.
+      ⏳ Observa los videos correspondientes del día para confirmar
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
@@ -145,10 +145,9 @@
     const contenedor = document.getElementById("contenedor-videos");
     contenedor.innerHTML = "";
     
-    // Reiniciar estado del botón al cambiar de día
     document.getElementById("btnConfirmar").disabled = true;
     document.getElementById("msg-espera").classList.remove("hidden");
-    document.getElementById("msg-espera").innerText = "⚠️ Abre los videos para iniciar tu tiempo de lectura.";
+    document.getElementById("msg-espera").innerText = "⏳ Observa los videos correspondientes del día para confirmar";
     timerActivo = false;
 
     let vA = (dia * 2) - 1;
@@ -164,13 +163,11 @@
       a.onclick = () => { 
         if (!timerActivo) {
           timerActivo = true;
-          document.getElementById("msg-espera").innerText = "⏳ Tiempo de lectura en curso... Espera 5 min para confirmar.";
-          
-          // CRONÓMETRO DE 5 MINUTOS (300,000 milisegundos)
+          // El mensaje se queda estático pero el timer sigue corriendo
           setTimeout(() => { 
             document.getElementById("btnConfirmar").disabled = false; 
             document.getElementById("msg-espera").classList.add("hidden"); 
-          }, 300000); 
+          }, 300000); // 5 minutos
         }
       };
       contenedor.appendChild(a);
