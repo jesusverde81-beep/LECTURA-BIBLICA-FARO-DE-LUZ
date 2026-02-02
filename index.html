@@ -67,7 +67,7 @@
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⚠️ Debes abrir AMBOS videos de hoy para activar la confirmación.
+      ⚠️ Debes abrir AMBOS videos para iniciar tu tiempo de lectura.
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
@@ -75,7 +75,7 @@
     </button>
 
     <div id="confirmacion-ok" class="hidden success-card">
-      🙌 ¡Registro exitoso! Dios bendiga tu constancia.
+      🙌 ¡Registro exitoso! Vuelve mañana para continuar.
     </div>
 
     <div class="link-reset" onclick="borrarRegistro()">Cambiar de usuario / Salir</div>
@@ -124,9 +124,9 @@
     59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYkA"
   };
 
-  // Variables para controlar la doble verificación
   let clickVideo1 = false;
   let clickVideo2 = false;
+  let tiempoCumplido = false;
 
   window.onload = function() {
     const nombre = localStorage.getItem("nombreBiblia");
@@ -170,22 +170,33 @@
   }
 
   function actualizarVideos() {
-    const dia = parseInt(document.getElementById("diaCalendario").value);
+    const dia = document.getElementById("diaCalendario").value;
     const contenedor = document.getElementById("contenedor-videos");
     contenedor.innerHTML = "";
     
-    // Resetear verificación al cambiar de día
-    clickVideo1 = false;
-    clickVideo2 = false;
+    const yaHecho = localStorage.getItem("lectura_dia_" + dia);
+    
+    if (yaHecho) {
+        contenedor.innerHTML = "<div class='success-card'>🌟 ¡Ya completaste la lectura de este día! Te esperamos mañana para continuar.</div>";
+        document.getElementById("btnConfirmar").classList.add("hidden");
+        document.getElementById("msg-espera").classList.add("hidden");
+        return;
+    }
+
+    document.getElementById("btnConfirmar").classList.remove("hidden");
     document.getElementById("btnConfirmar").disabled = true;
     document.getElementById("msg-espera").classList.remove("hidden");
+    document.getElementById("msg-espera").innerText = "⚠️ Debes abrir AMBOS videos para iniciar tu tiempo de lectura.";
     document.getElementById("confirmacion-ok").classList.add("hidden");
+    
+    clickVideo1 = false;
+    clickVideo2 = false;
+    tiempoCumplido = false;
 
-    let vA = (dia * 2) - 1;
-    let vB = (dia * 2);
+    let vA = (parseInt(dia) * 2) - 1;
+    let vB = (parseInt(dia) * 2);
 
-    const videos = [vA, vB];
-    videos.forEach((num, index) => {
+    [vA, vB].forEach((num, index) => {
       const a = document.createElement("a");
       a.className = "boton btn-video";
       a.target = "_blank";
@@ -196,12 +207,15 @@
         if (index === 0) clickVideo1 = true;
         if (index === 1) clickVideo2 = true;
         
-        // Solo habilitar si ambos fueron pulsados
-        if (clickVideo1 && clickVideo2) {
+        if (clickVideo1 && clickVideo2 && !tiempoCumplido) {
+          document.getElementById("msg-espera").innerText = "⏳ Tiempo de lectura en curso... Por favor, escucha los videos (5 min).";
           setTimeout(() => { 
+            tiempoCumplido = true;
             document.getElementById("btnConfirmar").disabled = false; 
             document.getElementById("msg-espera").classList.add("hidden"); 
-          }, 1000);
+          }, 300000); // 300000ms = 5 Minutos
+        } else if (!clickVideo1 || !clickVideo2) {
+            document.getElementById("msg-espera").innerText = "⚠️ Falta abrir uno de los videos del día.";
         }
       };
       contenedor.appendChild(a);
@@ -211,16 +225,21 @@
   function enviarRegistro() {
     const nombre = localStorage.getItem("nombreBiblia");
     const dia = document.getElementById("diaCalendario").value;
+    
+    localStorage.setItem("lectura_dia_" + dia, "true");
+
     document.getElementById("entry_nombre").value = nombre;
     document.getElementById("entry_fecha").value = dia + " de Feb (Faro de Luz)";
     document.getElementById("entry_estado").value = "COMPLETADO";
     document.getElementById("googleForm").submit();
+    
     document.getElementById("confirmacion-ok").classList.remove("hidden");
-    document.getElementById("btnConfirmar").disabled = true;
+    document.getElementById("btnConfirmar").classList.add("hidden");
+    document.getElementById("contenedor-videos").innerHTML = "<div class='success-card'>🌟 ¡Registro exitoso! Vuelve mañana.</div>";
   }
 
   function borrarRegistro() {
-    if(confirm("¿Cerrar sesión?")) {
+    if(confirm("¿Cerrar sesión? Esto no borrará tus lecturas ya enviadas.")) {
       localStorage.removeItem("nombreBiblia");
       location.reload();
     }
