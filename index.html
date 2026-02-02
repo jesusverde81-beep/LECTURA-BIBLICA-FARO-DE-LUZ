@@ -75,34 +75,28 @@
     </button>
 
     <div id="confirmacion-ok" class="hidden success-card">
-      🙌 ¡Registro exitoso enviado! Dios te bendiga.
+      🙌 ¡Registro enviado con éxito! Dios te bendiga.
     </div>
 
     <div class="link-reset" onclick="borrarRegistro()">Cambiar de usuario / Salir</div>
   </div>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {mostrarExito();}"></iframe>
-<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLScCqArTPe63CCpyxKnoEEDOFZ2_-UXF6DHBOLPrqZyls/formResponse" method="post" target="hidden_iframe" class="hidden">
   <input type="hidden" name="entry.895757803" id="entry_nombre">
   <input type="hidden" name="entry.1796484094" id="entry_fecha">
   <input type="hidden" name="entry.911384295" id="entry_estado">
 </form>
 
 <script>
-  let submitted = false;
   const MI_CONTRASEÑA = "biblia"; 
   const baseVideos = {
     1: "https://youtu.be/diUaiAJ9OP0", 2: "https://youtu.be/ZOELPNr_DpI",
     3: "https://youtu.be/idKTQdIoxbY", 4: "https://youtu.be/qd49LBB8tGI",
     5: "https://youtu.be/8l8DqqI_gxE", 6: "https://youtu.be/jSbPQ_CbCNo",
     7: "https://youtu.be/jfIgrT7vrqI", 8: "https://youtu.be/oNzleX15zy4",
-    9: "https://youtu.be/NiqxgHrvokg", 10: "https://youtu.be/qx3BsQfcGMo",
-    11: "https://youtu.be/7h_LGCeY5Sc", 12: "https://youtu.be/GWxat3z0xnc",
-    13: "https://youtu.be/PizLDJk9lnw", 14: "https://youtu.be/V82aT_jt5_k",
-    15: "https://youtu.be/LjDLtYzpITM", 16: "https://youtu.be/D_Dql0Yq5cw",
-    17: "https://youtu.be/DRqXBMk8H-I", 18: "https://youtu.be/GRqZAl-BViE",
-    19: "https://youtu.be/MPGiRBOe6Pc", 20: "https://youtu.be/eMV_cPbkSks"
+    9: "https://youtu.be/NiqxgHrvokg", 10: "https://youtu.be/qx3BsQfcGMo"
   };
 
   window.onload = function() {
@@ -163,10 +157,14 @@
         setTimeout(() => { 
           document.getElementById("btnConfirmar").disabled = false; 
           document.getElementById("msg-espera").classList.add("hidden"); 
-        }, 1000); 
+        }, 2000); 
       };
       contenedor.appendChild(a);
     });
+    
+    document.getElementById("btnConfirmar").disabled = true;
+    document.getElementById("msg-espera").classList.remove("hidden");
+    document.getElementById("confirmacion-ok").classList.add("hidden");
   }
 
   function enviarRegistro() {
@@ -177,11 +175,8 @@
     document.getElementById("entry_fecha").value = dia + " de Feb";
     document.getElementById("entry_estado").value = "COMPLETADO";
     
-    submitted = true;
     document.getElementById("googleForm").submit();
-  }
-
-  function mostrarExito() {
+    
     document.getElementById("confirmacion-ok").classList.remove("hidden");
     document.getElementById("btnConfirmar").disabled = true;
     document.getElementById("btnConfirmar").innerText = "¡ENVIADO!";
