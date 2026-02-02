@@ -75,14 +75,14 @@
     </button>
 
     <div id="confirmacion-ok" class="hidden success-card">
-      🙌 ¡Registro exitoso enviado! Dios te bendiga.
+      🙌 ¡Ya has registrado esta lectura hoy! Dios te bendiga.
     </div>
 
     <div class="link-reset" onclick="borrarRegistro()">Cambiar de usuario / Salir</div>
   </div>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {mostrarExito();}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { finalizarEnvio(); }"></iframe>
 <form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
   <input type="hidden" name="entry.895757803" id="entry_nombre">
   <input type="hidden" name="entry.1796484094" id="entry_fecha">
@@ -141,58 +141,81 @@
   }
 
   function actualizarVideos() {
-    const dia = parseInt(document.getElementById("diaCalendario").value);
+    const dia = document.getElementById("diaCalendario").value;
     const contenedor = document.getElementById("contenedor-videos");
-    contenedor.innerHTML = "";
+    const btnConfirmar = document.getElementById("btnConfirmar");
+    const msgEspera = document.getElementById("msg-espera");
+    const cardExito = document.getElementById("confirmacion-ok");
     
-    document.getElementById("btnConfirmar").disabled = true;
-    document.getElementById("msg-espera").classList.remove("hidden");
-    document.getElementById("msg-espera").innerText = "⏳ Observa los videos correspondientes del día para confirmar";
+    // Limpiar vista
+    contenedor.innerHTML = "";
     timerActivo = false;
 
-    let vA = (dia * 2) - 1;
-    let vB = (dia * 2);
+    // REVISAR HISTORIAL LOCAL
+    let historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    
+    if (historial.includes(dia)) {
+      // YA REALIZADO
+      btnConfirmar.classList.add("hidden");
+      msgEspera.classList.add("hidden");
+      cardExito.classList.remove("hidden");
+    } else {
+      // NO REALIZADO
+      btnConfirmar.classList.remove("hidden");
+      btnConfirmar.disabled = true;
+      msgEspera.classList.remove("hidden");
+      msgEspera.innerText = "⏳ Observa los videos correspondientes del día para confirmar";
+      cardExito.classList.add("hidden");
 
-    [vA, vB].forEach(num => {
-      const a = document.createElement("a");
-      a.className = "boton btn-video";
-      a.target = "_blank";
-      a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
-      a.innerHTML = "📖 Escuchar Día " + num;
-      
-      a.onclick = () => { 
-        if (!timerActivo) {
-          timerActivo = true;
-          // El mensaje se queda estático pero el timer sigue corriendo
-          setTimeout(() => { 
-            document.getElementById("btnConfirmar").disabled = false; 
-            document.getElementById("msg-espera").classList.add("hidden"); 
-          }, 300000); // 5 minutos
-        }
-      };
-      contenedor.appendChild(a);
-    });
+      let vA = (parseInt(dia) * 2) - 1;
+      let vB = (parseInt(dia) * 2);
+
+      [vA, vB].forEach(num => {
+        const a = document.createElement("a");
+        a.className = "boton btn-video";
+        a.target = "_blank";
+        a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
+        a.innerHTML = "📖 Escuchar Día " + num;
+        
+        a.onclick = () => { 
+          if (!timerActivo) {
+            timerActivo = true;
+            setTimeout(() => { 
+              document.getElementById("btnConfirmar").disabled = false; 
+              document.getElementById("msg-espera").classList.add("hidden"); 
+            }, 300000); // 5 minutos
+          }
+        };
+        contenedor.appendChild(a);
+      });
+    }
   }
 
   function enviarRegistro() {
     const nombre = localStorage.getItem("nombreBiblia");
     const dia = document.getElementById("diaCalendario").value;
+    
     document.getElementById("entry_nombre").value = nombre;
     document.getElementById("entry_fecha").value = dia + " de Feb";
     document.getElementById("entry_estado").value = "COMPLETADO";
+    
+    // Guardar en historial local antes de enviar
+    let historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    historial.push(dia);
+    localStorage.setItem("historialLecturas", JSON.stringify(historial));
+
     submitted = true;
     document.getElementById("googleForm").submit();
   }
 
-  function mostrarExito() {
-    document.getElementById("confirmacion-ok").classList.remove("hidden");
-    document.getElementById("btnConfirmar").disabled = true;
-    document.getElementById("btnConfirmar").innerText = "¡ENVIADO!";
+  function finalizarEnvio() {
+    // Recargar vista para mostrar el mensaje de éxito automáticamente
+    actualizarVideos();
   }
 
   function borrarRegistro() {
-    if(confirm("¿Cerrar sesión?")) {
-      localStorage.removeItem("nombreBiblia");
+    if(confirm("¿Cerrar sesión? Esto borrará el historial de este dispositivo.")) {
+      localStorage.clear();
       location.reload();
     }
   }
