@@ -93,8 +93,8 @@
   let submitted = false;
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
-  
-  // Lista Completa de Videos (Enero y Febrero)
+
+  // BASE DE DATOS COMPLETA DE VIDEOS
   const baseVideos = {
     1: "https://youtu.be/diUaiAJ9OP0", 2: "https://youtu.be/ZOELPNr_DpI",
     3: "https://youtu.be/idKTQdIoxbY", 4: "https://youtu.be/qd49LBB8tGI",
@@ -156,7 +156,7 @@
     
     const selector = document.getElementById("diaCalendario");
     const hoy = new Date().getDate();
-    // Mostramos hoy y 4 días atrás para recuperación
+    // Selector para hoy y 4 días previos
     for (let i = 0; i < 5; i++) {
         let d = hoy - i;
         if (d > 0) {
@@ -179,7 +179,7 @@
     contenedor.innerHTML = "";
     timerActivo = false;
 
-    // REVISAR SI YA SE HIZO ESTE DÍA EN ESTE NAVEGADOR
+    // REVISAR SI YA SE HIZO
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     
     if (historial.includes(dia)) {
@@ -193,6 +193,7 @@
       msg.innerText = "⏳ Observa los videos del día para confirmar";
       ok.classList.add("hidden");
       
+      // Lógica: Día 9 -> Videos 17 y 18
       let vA = (parseInt(dia) * 2) - 1;
       let vB = (parseInt(dia) * 2);
 
@@ -200,7 +201,7 @@
         const a = document.createElement("a");
         a.className = "boton btn-video";
         a.target = "_blank";
-        a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
+        a.href = baseVideos[num];
         a.innerHTML = "📖 Escuchar Día " + num;
         a.onclick = () => { 
           if (!timerActivo) {
@@ -208,7 +209,7 @@
             setTimeout(() => { 
               btn.disabled = false; 
               msg.classList.add("hidden"); 
-            }, 300000); // 5 minutos exactos
+            }, 300000); // 5 Minutos reales
           }
         };
         contenedor.appendChild(a);
@@ -224,7 +225,7 @@
     document.getElementById("entry_fecha").value = dia + " de Feb";
     document.getElementById("entry_estado").value = "COMPLETADO";
     
-    // Guardar en el historial local del dispositivo
+    // Guardar en memoria local
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     historial.push(dia);
     localStorage.setItem("historialLecturas", JSON.stringify(historial));
@@ -234,11 +235,11 @@
   }
 
   function finalizarEnvio() {
-    actualizarVideos(); // Recarga para mostrar mensaje de éxito
+    actualizarVideos();
   }
 
   function borrarRegistro() {
-    if(confirm("¿Cerrar sesión? Se borrará el historial visual de este dispositivo.")) {
+    if(confirm("¿Cerrar sesión?")) {
       localStorage.clear();
       location.reload();
     }
