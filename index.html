@@ -67,7 +67,7 @@
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⏳ Observa los videos correspondientes del día para confirmar
+      ⏳ Observa los videos del día para confirmar
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
@@ -75,7 +75,7 @@
     </button>
 
     <div id="confirmacion-ok" class="hidden success-card">
-      🙌 ¡Ya has registrado esta lectura hoy! Dios te bendiga.
+      🙌 ¡Ya has registrado esta lectura! Dios te bendiga.
     </div>
 
     <div class="link-reset" onclick="borrarRegistro()">Cambiar de usuario / Salir</div>
@@ -93,11 +93,39 @@
   let submitted = false;
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
+  
+  // Lista Completa de Videos (Enero y Febrero)
   const baseVideos = {
     1: "https://youtu.be/diUaiAJ9OP0", 2: "https://youtu.be/ZOELPNr_DpI",
     3: "https://youtu.be/idKTQdIoxbY", 4: "https://youtu.be/qd49LBB8tGI",
     5: "https://youtu.be/8l8DqqI_gxE", 6: "https://youtu.be/jSbPQ_CbCNo",
-    7: "https://youtu.be/jfIgrT7vrqI", 8: "https://youtu.be/oNzleX15zy4"
+    7: "https://youtu.be/jfIgrT7vrqI", 8: "https://youtu.be/oNzleX15zy4",
+    9: "https://youtu.be/NiqxgHrvokg", 10: "https://youtu.be/qx3BsQfcGMo",
+    11: "https://youtu.be/7h_LGCeY5Sc", 12: "https://youtu.be/GWxat3z0xnc",
+    13: "https://youtu.be/PizLDJk9lnw", 14: "https://youtu.be/V82aT_jt5_k",
+    15: "https://youtu.be/LjDLtYzpITM", 16: "https://youtu.be/D_Dql0Yq5cw",
+    17: "https://youtu.be/DRqXBMk8H-I", 18: "https://youtu.be/GRqZAl-BViE",
+    19: "https://youtu.be/MPGiRBOe6Pc", 20: "https://youtu.be/eMV_cPbkSks",
+    21: "https://youtu.be/_grDWNpQuCQ", 22: "https://youtu.be/nIQhL5vR66g",
+    23: "https://youtu.be/PTjFUU1d5GA", 24: "https://youtu.be/X2jGxkXpWW4",
+    25: "https://youtu.be/_cFt9pslxjI", 26: "https://youtu.be/Rqw8ZU9wVPA",
+    27: "https://youtu.be/0ixj--V-UmA", 28: "https://youtu.be/aH_YhfmUi_s",
+    29: "https://youtu.be/hf_bQcBdb88", 30: "https://youtu.be/RdmcvXZ9UQY",
+    31: "https://youtu.be/vz_ZWBAC-P8", 32: "https://youtu.be/jtxYOLDKzHY",
+    33: "https://youtu.be/BSUvsSOa2-Y", 34: "https://youtu.be/TE1H55eVfds",
+    35: "https://youtu.be/lnitLAh7epg", 36: "https://youtu.be/SuwC2XVrxm0",
+    37: "https://youtu.be/dPntlWciQeI", 38: "https://youtu.be/DBrK5-Uw0pA",
+    39: "https://youtu.be/YOH53BxSxn0", 40: "https://youtu.be/5MAZOBph7Kw",
+    41: "https://youtu.be/5mVk1EdtT5U", 42: "https://youtu.be/FTZ34dyHIiw",
+    43: "https://youtu.be/aPiVaYqeTSg", 44: "https://youtu.be/sdDOts9YKGM",
+    45: "https://youtu.be/-roeXh7n_uQ", 46: "https://youtu.be/ftJILGq2ZsM",
+    47: "https://youtu.be/LAq76bnFeUg", 48: "https://youtu.be/nfnFwTrl2YQ",
+    49: "https://youtu.be/1cBqniC6a84", 50: "https://youtu.be/TrjAd8jOsi0",
+    51: "https://youtu.be/VtAb05goSpU", 52: "https://youtu.be/3f_UqWl6ID8",
+    53: "https://youtu.be/r_zOMAuK8Yc", 54: "https://youtu.be/p00HKjahQ5g",
+    55: "https://youtu.be/OpEIpV2J5vw", 56: "https://youtu.be/O9Tt151L1hc",
+    57: "https://youtu.be/YoOFzk_s_7o", 58: "https://youtu.be/vFaJvzHo-uQ",
+    59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYkA"
   };
 
   window.onload = function() {
@@ -128,6 +156,7 @@
     
     const selector = document.getElementById("diaCalendario");
     const hoy = new Date().getDate();
+    // Mostramos hoy y 4 días atrás para recuperación
     for (let i = 0; i < 5; i++) {
         let d = hoy - i;
         if (d > 0) {
@@ -143,30 +172,27 @@
   function actualizarVideos() {
     const dia = document.getElementById("diaCalendario").value;
     const contenedor = document.getElementById("contenedor-videos");
-    const btnConfirmar = document.getElementById("btnConfirmar");
-    const msgEspera = document.getElementById("msg-espera");
-    const cardExito = document.getElementById("confirmacion-ok");
+    const btn = document.getElementById("btnConfirmar");
+    const msg = document.getElementById("msg-espera");
+    const ok = document.getElementById("confirmacion-ok");
     
-    // Limpiar vista
     contenedor.innerHTML = "";
     timerActivo = false;
 
-    // REVISAR HISTORIAL LOCAL
-    let historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    // REVISAR SI YA SE HIZO ESTE DÍA EN ESTE NAVEGADOR
+    const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     
     if (historial.includes(dia)) {
-      // YA REALIZADO
-      btnConfirmar.classList.add("hidden");
-      msgEspera.classList.add("hidden");
-      cardExito.classList.remove("hidden");
+      btn.classList.add("hidden");
+      msg.classList.add("hidden");
+      ok.classList.remove("hidden");
     } else {
-      // NO REALIZADO
-      btnConfirmar.classList.remove("hidden");
-      btnConfirmar.disabled = true;
-      msgEspera.classList.remove("hidden");
-      msgEspera.innerText = "⏳ Observa los videos correspondientes del día para confirmar";
-      cardExito.classList.add("hidden");
-
+      btn.classList.remove("hidden");
+      btn.disabled = true;
+      msg.classList.remove("hidden");
+      msg.innerText = "⏳ Observa los videos del día para confirmar";
+      ok.classList.add("hidden");
+      
       let vA = (parseInt(dia) * 2) - 1;
       let vB = (parseInt(dia) * 2);
 
@@ -176,14 +202,13 @@
         a.target = "_blank";
         a.href = baseVideos[num] || "https://www.youtube.com/results?search_query=Biblia+dramatizada+dia+" + num;
         a.innerHTML = "📖 Escuchar Día " + num;
-        
         a.onclick = () => { 
           if (!timerActivo) {
             timerActivo = true;
             setTimeout(() => { 
-              document.getElementById("btnConfirmar").disabled = false; 
-              document.getElementById("msg-espera").classList.add("hidden"); 
-            }, 300000); // 5 minutos
+              btn.disabled = false; 
+              msg.classList.add("hidden"); 
+            }, 300000); // 5 minutos exactos
           }
         };
         contenedor.appendChild(a);
@@ -199,8 +224,8 @@
     document.getElementById("entry_fecha").value = dia + " de Feb";
     document.getElementById("entry_estado").value = "COMPLETADO";
     
-    // Guardar en historial local antes de enviar
-    let historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    // Guardar en el historial local del dispositivo
+    const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     historial.push(dia);
     localStorage.setItem("historialLecturas", JSON.stringify(historial));
 
@@ -209,12 +234,11 @@
   }
 
   function finalizarEnvio() {
-    // Recargar vista para mostrar el mensaje de éxito automáticamente
-    actualizarVideos();
+    actualizarVideos(); // Recarga para mostrar mensaje de éxito
   }
 
   function borrarRegistro() {
-    if(confirm("¿Cerrar sesión? Esto borrará el historial de este dispositivo.")) {
+    if(confirm("¿Cerrar sesión? Se borrará el historial visual de este dispositivo.")) {
       localStorage.clear();
       location.reload();
     }
