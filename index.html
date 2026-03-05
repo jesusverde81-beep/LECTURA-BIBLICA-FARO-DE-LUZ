@@ -60,7 +60,7 @@
     </div>
     
     <div class="selector-recuperacion">
-      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día de lectura:</label>
+      <label id="labelSelector" style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día de lectura:</label>
       <select id="diaCalendario" onchange="actualizarVideos()"></select>
     </div>
 
@@ -95,23 +95,39 @@
   const MI_CONTRASEÑA = "biblia"; 
 
   const baseVideos = {
-    // ENLACES CORREGIDOS SEGÚN EL PDF OFICIAL
-    57: "https://youtu.be/YoOFzk_s_70", 58: "https://youtu.be/vFaJvzHo-uQ",
-    59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYKA",
-    61: "https://youtu.be/y0QXgwhvpv4", 62: "https://youtu.be/k4C1cWcXJ-A",
-    63: "https://youtu.be/xhjPfGv_pIM", // <--- GUION BAJO CORREGIDO
-    64: "https://youtu.be/-x2bisbPttA", 65: "https://youtu.be/eMtS9yJ0pOk",
-    66: "https://youtu.be/AV9sU9oo1Ks", 67: "https://youtu.be/AV9sU9oo1Ks",
-    68: "https://youtu.be/Fhqjt_ZGkME", 69: "https://youtu.be/t-Ky7Spz4UA",
-    70: "https://youtu.be/oszXljt-a6g", 71: "https://youtu.be/IKQHc15xytA",
-    72: "https://youtu.be/6LjFmazVII8", 73: "https://youtu.be/jbp-vBYJcX0",
-    74: "https://youtu.be/9JRMFQOksnA", 75: "https://youtu.be/ABguF6QtcpA",
-    76: "https://youtu.be/hYRdfnxfjLw", 77: "https://youtu.be/xqY8yN4yM2w",
-    78: "https://youtu.be/Hyv3spEvV-A", 79: "https://youtu.be/rglJ0AORudc",
-    80: "https://youtu.be/7EqYkjlO8_8", 81: "https://youtu.be/JUeyW2BGS1s",
-    82: "https://youtu.be/5hSVXa4EQZY", 83: "https://youtu.be/IDA_CHN33-4",
-    84: "https://youtu.be/aUlsrD358Zk", 85: "https://youtu.be/hqlmHfVv7wQ",
-    86: "https://youtu.be/5RADyJrE4gl", 87: "https://youtu.be/F8-ZdFMMJN4"
+    55: "https://youtu.be/OpEIpV2J5vw", // 24 de feb
+    56: "https://youtu.be/O9Tt151L1hc", // 25 de feb
+    57: "https://youtu.be/YoOFzks70",   // 26 de feb
+    58: "https://youtu.be/vFaJvzHo-uQ", // 27 de feb
+    59: "https://youtu.be/nKHy5Kk6Gk4", // 28 de feb
+    60: "https://youtu.be/d4cDERhAYKA", // 1 de mar
+    61: "https://youtu.be/y0QXgwhvpv4",
+    62: "https://youtu.be/k4C1cWcXJ-A",
+    63: "https://youtu.be/xhjPfGv_pIM",
+    64: "https://youtu.be/-x2bisbPttA",
+    65: "https://youtu.be/eMtS9yJ0pOk",
+    66: "https://youtu.be/AV9sU9oo1Ks",
+    67: "https://youtu.be/AV9sU9oo1Ks",
+    68: "https://youtu.be/Fhqjt_ZGkME",
+    69: "https://youtu.be/t-Ky7Spz4UA",
+    70: "https://youtu.be/oszXljt-a6g",
+    71: "https://youtu.be/IKQHc15xytA",
+    72: "https://youtu.be/6LjFmazVII8",
+    73: "https://youtu.be/jbp-vBYJcX0",
+    74: "https://youtu.be/9JRMFQOksnA",
+    75: "https://youtu.be/ABguF6QtcpA",
+    76: "https://youtu.be/hYRdfnxfjLw",
+    77: "https://youtu.be/xqY8yN4yM2w",
+    78: "https://youtu.be/Hyv3spEvV-A",
+    79: "https://youtu.be/rglJ0AORudc",
+    80: "https://youtu.be/7EqYkjlO8_8",
+    81: "https://youtu.be/JUeyW2BGS1s",
+    82: "https://youtu.be/5hSVXa4EQZY",
+    83: "https://youtu.be/IDA_CHN33-4",
+    84: "https://youtu.be/aUlsrD358Zk",
+    85: "https://youtu.be/hqlmHfVv7wQ",
+    86: "https://youtu.be/5RADyJrE4gl",
+    87: "https://youtu.be/F8-ZdFMMJN4"
   };
 
   window.onload = function() {
@@ -141,20 +157,32 @@
     document.getElementById("saludoUsuario").innerText = "¡Hola, " + nombre.split(' ')[0] + "!";
     
     const selector = document.getElementById("diaCalendario");
-    for (let d = 57; d <= 87; d++) {
-        let opt = document.createElement("option");
-        opt.value = d;
-        opt.text = "Día " + d;
-        selector.add(opt);
-    }
-
     const ahora = new Date();
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
     const dif = ahora - inicioAño;
     const unDia = 1000 * 60 * 60 * 24;
-    const diaDelAño = Math.floor(dif / unDia);
+    const diaHoy = Math.floor(dif / unDia);
+
+    // REGLA ESPECIAL PARA 4 Y 5 DE MARZO (DÍAS 63 Y 64)
+    let diaInicio;
+    if (diaHoy === 63 || diaHoy === 64) {
+        diaInicio = 55; // Permite desde el 24 de feb
+        document.getElementById("labelSelector").innerText = "🎁 ¡RECUPERACIÓN DE FEBRERO ACTIVA!";
+    } else {
+        diaInicio = diaHoy - 5; // Regla normal
+    }
+
+    selector.innerHTML = "";
+    for (let d = diaInicio; d <= diaHoy; d++) {
+        if (baseVideos[d]) {
+            let opt = document.createElement("option");
+            opt.value = d;
+            opt.text = "Día " + d;
+            selector.add(opt);
+        }
+    }
     
-    selector.value = diaDelAño; 
+    selector.value = diaHoy; 
     actualizarVideos();
   }
 
