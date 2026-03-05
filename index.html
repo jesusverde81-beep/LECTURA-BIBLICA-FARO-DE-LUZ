@@ -83,7 +83,7 @@
 </div>
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { finalizarEnvio(); }"></iframe>
-<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
+<form id="googleForm" action="https://docs.google.com/forms/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
   <input type="hidden" name="entry.895757803" id="entry_nombre">
   <input type="hidden" name="entry.1796484094" id="entry_fecha">
   <input type="hidden" name="entry.911384295" id="entry_estado">
@@ -95,38 +95,22 @@
   const MI_CONTRASEÑA = "biblia"; 
 
   const baseVideos = {
-    55: "https://youtu.be/OpEIpV2J5vw", // 24 de feb
-    56: "https://youtu.be/O9Tt151L1hc", // 25 de feb
-    57: "https://youtu.be/YoOFzks70",   // 26 de feb
-    58: "https://youtu.be/vFaJvzHo-uQ", // 27 de feb
-    59: "https://youtu.be/nKHy5Kk6Gk4", // 28 de feb
-    60: "https://youtu.be/d4cDERhAYKA", // 1 de mar
-    61: "https://youtu.be/y0QXgwhvpv4",
-    62: "https://youtu.be/k4C1cWcXJ-A",
-    63: "https://youtu.be/xhjPfGv_pIM",
-    64: "https://youtu.be/-x2bisbPttA",
-    65: "https://youtu.be/eMtS9yJ0pOk",
-    66: "https://youtu.be/AV9sU9oo1Ks",
-    67: "https://youtu.be/AV9sU9oo1Ks",
-    68: "https://youtu.be/Fhqjt_ZGkME",
-    69: "https://youtu.be/t-Ky7Spz4UA",
-    70: "https://youtu.be/oszXljt-a6g",
-    71: "https://youtu.be/IKQHc15xytA",
-    72: "https://youtu.be/6LjFmazVII8",
-    73: "https://youtu.be/jbp-vBYJcX0",
-    74: "https://youtu.be/9JRMFQOksnA",
-    75: "https://youtu.be/ABguF6QtcpA",
-    76: "https://youtu.be/hYRdfnxfjLw",
-    77: "https://youtu.be/xqY8yN4yM2w",
-    78: "https://youtu.be/Hyv3spEvV-A",
-    79: "https://youtu.be/rglJ0AORudc",
-    80: "https://youtu.be/7EqYkjlO8_8",
-    81: "https://youtu.be/JUeyW2BGS1s",
-    82: "https://youtu.be/5hSVXa4EQZY",
-    83: "https://youtu.be/IDA_CHN33-4",
-    84: "https://youtu.be/aUlsrD358Zk",
-    85: "https://youtu.be/hqlmHfVv7wQ",
-    86: "https://youtu.be/5RADyJrE4gl",
+    55: "https://youtu.be/OpEIpV2J5vw", 56: "https://youtu.be/O9Tt151L1hc",
+    57: "https://youtu.be/YoOFzk_s_70", 58: "https://youtu.be/vFaJvzHo-uQ",
+    59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYKA",
+    61: "https://youtu.be/y0QXgwhvpv4", 62: "https://youtu.be/k4C1cWcXJ-A",
+    63: "https://youtu.be/xhjPfGv_pIM", 64: "https://youtu.be/-x2bisbPttA",
+    65: "https://youtu.be/eMtS9yJ0pOk", 66: "https://youtu.be/AV9sU9oo1Ks",
+    67: "https://youtu.be/AV9sU9oo1Ks", 68: "https://youtu.be/Fhqjt_ZGkME",
+    69: "https://youtu.be/t-Ky7Spz4UA", 70: "https://youtu.be/oszXljt-a6g",
+    71: "https://youtu.be/IKQHc15xytA", 72: "https://youtu.be/6LjFmazVII8",
+    73: "https://youtu.be/jbp-vBYJcX0", 74: "https://youtu.be/9JRMFQOksnA",
+    75: "https://youtu.be/ABguF6QtcpA", 76: "https://youtu.be/hYRdfnxfjLw",
+    77: "https://youtu.be/xqY8yN4yM2w", 78: "https://youtu.be/Hyv3spEvV-A",
+    79: "https://youtu.be/rglJ0AORudc", 80: "https://youtu.be/7EqYkjlO8_8",
+    81: "https://youtu.be/JUeyW2BGS1s", 82: "https://youtu.be/5hSVXa4EQZY",
+    83: "https://youtu.be/IDA_CHN33-4", 84: "https://youtu.be/aUlsrD358Zk",
+    85: "https://youtu.be/hqlmHfVv7wQ", 86: "https://youtu.be/5RADyJrE4gl",
     87: "https://youtu.be/F8-ZdFMMJN4"
   };
 
@@ -163,13 +147,14 @@
     const unDia = 1000 * 60 * 60 * 24;
     const diaHoy = Math.floor(dif / unDia);
 
-    // REGLA ESPECIAL PARA 4 Y 5 DE MARZO (DÍAS 63 Y 64)
+    // Lógica de recuperación especial (4 y 5 de marzo)
     let diaInicio;
     if (diaHoy === 63 || diaHoy === 64) {
-        diaInicio = 55; // Permite desde el 24 de feb
+        diaInicio = 55; 
         document.getElementById("labelSelector").innerText = "🎁 ¡RECUPERACIÓN DE FEBRERO ACTIVA!";
     } else {
-        diaInicio = diaHoy - 5; // Regla normal
+        diaInicio = Math.max(1, diaHoy - 5);
+        document.getElementById("labelSelector").innerText = "📅 Selecciona el día de lectura:";
     }
 
     selector.innerHTML = "";
@@ -182,12 +167,16 @@
         }
     }
     
+    // FORZAR QUE SE SELECCIONE EL DÍA ACTUAL (EL ÚLTIMO DE LA LISTA)
     selector.value = diaHoy; 
     actualizarVideos();
   }
 
   function actualizarVideos() {
-    const diaNum = parseInt(document.getElementById("diaCalendario").value);
+    const selector = document.getElementById("diaCalendario");
+    if (!selector.value) return;
+
+    const diaNum = parseInt(selector.value);
     const diaKey = diaNum.toString();
     const contenedor = document.getElementById("contenedor-videos");
     const btn = document.getElementById("btnConfirmar");
@@ -216,7 +205,13 @@
         a.onclick = () => {
           if(!timerActivo) {
             timerActivo = true;
-            setTimeout(() => { btn.disabled = false; msg.classList.add("hidden"); }, 300000);
+            // Espera de 5 minutos para habilitar confirmación
+            setTimeout(() => { 
+                if(parseInt(document.getElementById("diaCalendario").value) === diaNum) {
+                    btn.disabled = false; 
+                    msg.classList.add("hidden"); 
+                }
+            }, 300000);
           }
         };
         contenedor.appendChild(a);
