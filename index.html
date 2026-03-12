@@ -83,7 +83,7 @@
 </div>
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { finalizarEnvio(); }"></iframe>
-<form id="googleForm" action="https://docs.google.com/forms/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
+<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSc6uZXnD52GUgV_wHzREZf6PU3XY6Kic7gXsBpvXmHEMOmEIA/formResponse" method="post" target="hidden_iframe" class="hidden">
   <input type="hidden" name="entry.895757803" id="entry_nombre">
   <input type="hidden" name="entry.1796484094" id="entry_fecha">
   <input type="hidden" name="entry.911384295" id="entry_estado">
@@ -102,7 +102,8 @@
     63: "https://youtu.be/xhjPfGv_pIM", 64: "https://youtu.be/-x2bisbPttA",
     65: "https://youtu.be/eMtS9yJ0pOk", 66: "https://youtu.be/AV9sU9oo1Ks",
     67: "https://youtu.be/AV9sU9oo1Ks", 68: "https://youtu.be/Fhqjt_ZGkME",
-    69: "https://youtu.be/t-Ky7Spz4UA", 70: "https://youtu.be/oszXljt-a6g",
+    69: "https://youtu.be/t-Ky7Spz4UA", 
+    70: "https://youtu.be/oszXIjt-a6g", // ENLACE CORREGIDO CON 'I' MAYÚSCULA
     71: "https://youtu.be/IKQHc15xytA", 72: "https://youtu.be/6LjFmazVII8",
     73: "https://youtu.be/jbp-vBYJcX0", 74: "https://youtu.be/9JRMFQOksnA",
     75: "https://youtu.be/ABguF6QtcpA", 76: "https://youtu.be/hYRdfnxfjLw",
@@ -147,9 +148,9 @@
     const unDia = 1000 * 60 * 60 * 24;
     const diaHoy = Math.floor(dif / unDia);
 
-    // Lógica de recuperación especial (4 y 5 de marzo)
+    // Mantenemos la recuperación especial por ser hoy 11-12 de marzo
     let diaInicio;
-    if (diaHoy === 63 || diaHoy === 64) {
+    if (diaHoy >= 70 && diaHoy <= 71) {
         diaInicio = 55; 
         document.getElementById("labelSelector").innerText = "🎁 ¡RECUPERACIÓN DE FEBRERO ACTIVA!";
     } else {
@@ -167,7 +168,6 @@
         }
     }
     
-    // FORZAR QUE SE SELECCIONE EL DÍA ACTUAL (EL ÚLTIMO DE LA LISTA)
     selector.value = diaHoy; 
     actualizarVideos();
   }
@@ -205,7 +205,6 @@
         a.onclick = () => {
           if(!timerActivo) {
             timerActivo = true;
-            // Espera de 5 minutos para habilitar confirmación
             setTimeout(() => { 
                 if(parseInt(document.getElementById("diaCalendario").value) === diaNum) {
                     btn.disabled = false; 
