@@ -17,7 +17,7 @@
     .badge-info { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: bold; display: inline-block; }
     .selector-recuperacion { background: #fff8e1; border: 2px solid #ffb300; border-radius: 12px; padding: 15px; margin: 20px 0; }
     select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ffb300; font-size: 16px; background: white; outline: none; }
-    .boton { display: block; width: 100%; padding: 15px; margin-top: 10px; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px; cursor: pointer; border: none; transition: 0.3s; box-sizing: border-box; }
+    .boton { display: block; width: 100%; padding: 15px; margin-top: 10px; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px; cursor: pointer; border: none; transition: 0.3s; box-sizing: border-box; text-align: center; }
     .btn-video { background: #c4302b; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .btn-confirmar { background: #2e7d32; color: white; margin-top: 25px; }
     .btn-confirmar:disabled { background: #ccc; cursor: not-allowed; opacity: 0.7; }
@@ -97,32 +97,102 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
 
-  // LISTA DE VIDEOS LIMPIOS (DEL PDF)
+  // LISTA DE VIDEOS - IDs CORRECTOS EXTRAÍDOS DEL PDF
   const baseVideos = {
-    79: "rglJ0AORudc", 80: "7EqYkjlO8", 81: "JUeyW2BGS1s", 82: "5hSVXa4EQZY",
-    83: "IDA_CHN33-4", 84: "aUlsrD358Zk", 85: "hqlmHfVv7wQ", 86: "5RADyJrE4gl",
-    87: "F8-ZdFMMJN4", 88: "A5kX851eY5c", 89: "7BggxHnMM6k", 90: "koYFcNfdaxk",
-    91: "4y-Gl85B8g0", 92: "nn2ppTXIc6Q", 93: "d2mjv9ijZgl", 94: "-uMqTWUIptl",
-    95: "lFhBQBvc6GI", 96: "MdE1Hm30sRk", 97: "1Q7Yvfa2zy8", 98: "aO74jz5uGSY",
-    99: "1zMGeMHlaUo", 100: "-WudKb4K4Ok", 101: "PXsZcyMJQMg", 102: "Vd8yRXBtQoE",
-    103: "rLx7KMkDEIc", 104: "CQoYVhGVjfY", 105: "aoW7liAAVY", 106: "NmCXEd4rbl",
-    107: "FO2HqU_oK5M", 108: "RCbny6COTXM", 109: "Ep5jFu5Pv7A", 110: "LEPj3JW8pf0",
-    111: "S0rpwD8KFnk", 112: "ofg8J7nAqE8", 113: "mRddZos2sg", 114: "iex8YtC-PLE",
-    115: "6PCYHd8nYLc", 116: "nlGazwlhYjY", 117: "LSp3h77iVRw", 118: "zTUN6WTY54",
-    119: "JycQkBd7Zw", 120: "7Xog1R8Wuo", 121: "WIbSCZyN-vI", 122: "VctQbiuAb48",
-    123: "B92cxtaHMyA", 124: "ySOOLWWPu20", 125: "Raw2y-Ol1lc", 126: "3e4VMX3suEA",
-    127: "3e4VMX3suEA", 128: "2x8cr5ynTA4", 129: "TheZlL1jhYU", 130: "Nn40T-A7XXM",
-    131: "kqRJdoQnRyg", 132: "ivLD36ZX53Y", 133: "yEw91yTEg6A", 134: "bDmu4IKzTLs",
-    135: "HtQ0ovqMSjk", 136: "02iUVz7EOV0", 137: "BnMKliHTxo", 138: "nvTioRdwQjo",
-    139: "7Uc-VQmEeGM", 140: "VMuoz1RTzPg", 141: "7s4rV29hmmM", 142: "Mqsfielp5cA",
-    143: "qOy5k1Qn3tl", 144: "ELOLDEDDqXI"
+    79: "rglJ0AORudc",
+    80: "7EqY_k_jlO8",
+    81: "JUeyW2BGS1s",
+    82: "5hSVXa4EQZY",
+    83: "IDA_CHN33-4",
+    84: "aUlrsD358Zk",
+    85: "hqImHfVv7wQ",
+    86: "5RADyJrE4gl",
+    87: "F8-ZdFMMJN4",
+    88: "A5kX851eY5c",
+    89: "7BggxHnMM6k",
+    90: "koYFcNfdaxk",
+    91: "4y-GI85B8g0",
+    92: "nn2ppTXlc6Q",
+    93: "d2mjv9ijZgl",
+    94: "-uMqTWU1plt",
+    95: "lFhBQBvcc6GI",
+    96: "MdE1Hm30sRk",
+    97: "1Q7Yvfazzy8",
+    98: "aO74jz5uGSY",
+    99: "1zMGeMHlaUo",
+    100: "-WudKb4K4Ok",
+    101: "PXsZcyMJQMg",
+    102: "Vd8yRXBtQoE",
+    103: "rLx7KMkDEIc",
+    104: "CQoYVhGVjfY",
+    105: "_aoW7liAAVY",
+    106: "N_mCXEd4rbl",
+    107: "FO2HqU_oK5M",
+    108: "RCbny6COTxM",
+    109: "Ep5jFu5Pv7A",
+    110: "LEPj3JW8pf0",
+    111: "S0rpwD8KFnk",
+    112: "ofg8J7nAqE8",
+    113: "m_RddZos2sg",
+    114: "iex8YtC-PLE",
+    115: "6PCYHd8nYLc",
+    116: "nlGazwlhYi",
+    117: "LSp3h77iVRw",
+    118: "zTUN6WTY54",
+    119: "JycQk_Bd7Zw",
+    120: "7Xog1R8Wuo",
+    121: "WIbSCZyN-vl",
+    122: "VctQbiuAb48",
+    123: "B92cxtaHMya",
+    124: "ySOOLWWPu20",
+    125: "Raw2y-Ol1lc",
+    126: "3e4VMX3suEA",
+    127: "3e4VMX3suEA",
+    128: "2x8cr5ynTA4",
+    129: "TheZIL1jhYU",
+    130: "Nn40T-A7XXM",
+    131: "kqRJdoQnRyg",
+    132: "ivLDS6ZX53Y",
+    133: "yEw91yTEg6A",
+    134: "bDmu4IKzTLs",
+    135: "HtQ0ovqMSjk",
+    136: "02iUVz7EOV0",
+    137: "BnMKliHTxo",
+    138: "nvTioRdwQjo",
+    139: "7Uc-VQmEeGM",
+    140: "VMuo2lRTzPg",
+    141: "7s4rV29hmmM",
+    142: "Mqsfilelp5cA",
+    143: "qOy5k1Qn3tl",
+    144: "EL0LDeDDqXI"
   };
+
+  // Frases motivacionales
+  const frases = [
+    "📖 La palabra de Dios es lámpara a tus pies",
+    "🙏 Lee y serás bendecido",
+    "✨ Cada día un paso más cerca de Dios",
+    "💪 La fe viene por el oír la palabra",
+    "🌟 Dios habla a través de su palabra",
+    "📚 La Biblia es el manual de vida",
+    "🕯️ Tu palabra es una luz en mi camino",
+    "❤️ Escudriñad las Escrituras"
+  ];
 
   window.onload = function() {
     const nombre = localStorage.getItem("nombreBiblia");
     if (nombre) mostrarPanel(nombre);
     calcularDias();
+    mostrarFraseAleatoria();
   };
+
+  function mostrarFraseAleatoria() {
+    const fraseDiv = document.getElementById("fraseDia");
+    if (fraseDiv) {
+      const indice = Math.floor(Math.random() * frases.length);
+      fraseDiv.innerText = frases[indice];
+    }
+  }
 
   function calcularDias() {
     const hoy = new Date();
@@ -135,21 +205,30 @@
     document.getElementById("paso-registro").classList.add("hidden");
     document.getElementById("paso-lectura").classList.remove("hidden");
     document.getElementById("saludoUsuario").innerText = "¡Hola, " + nombre.split(' ')[0] + "!";
+
+    const selector = document.getElementById("diaCalendario");
+    // Limpiar opciones existentes
+    selector.innerHTML = "";
     
+    // Llenar selector con días del 79 al 144 que tengan video
+    for (let d = 79; d <= 144; d++) {
+      if (baseVideos[d]) {
+        let opt = document.createElement("option");
+        opt.value = d;
+        opt.text = "Día " + d;
+        selector.add(opt);
+      }
+    }
+    
+    // Seleccionar el día actual si está disponible
     const ahora = new Date();
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
     const diaHoy = Math.floor((ahora - inicioAño) / (1000 * 60 * 60 * 24));
-
-    const selector = document.getElementById("diaCalendario");
-    for (let d = 79; d <= 144; d++) {
-        if (baseVideos[d]) {
-            let opt = document.createElement("option");
-            opt.value = d;
-            opt.text = "Día " + d;
-            selector.add(opt);
-        }
+    if (diaHoy >= 79 && diaHoy <= 144 && baseVideos[diaHoy]) {
+      selector.value = diaHoy;
+    } else {
+      selector.value = 79;
     }
-    selector.value = Math.min(diaHoy, 144); 
     actualizarVideos();
   }
 
@@ -166,9 +245,16 @@
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     
     if (historial.includes(diaNum.toString())) {
-      btn.classList.add("hidden"); msg.classList.add("hidden"); ok.classList.remove("hidden");
+      btn.classList.add("hidden");
+      msg.classList.add("hidden");
+      ok.classList.remove("hidden");
     } else {
-      btn.classList.remove("hidden"); btn.disabled = true; msg.classList.remove("hidden"); ok.classList.add("hidden");
+      btn.classList.remove("hidden");
+      btn.disabled = true;
+      msg.classList.remove("hidden");
+      ok.classList.add("hidden");
+      
+      // Crear botón de video
       const a = document.createElement("a");
       a.className = "boton btn-video";
       a.target = "_blank";
@@ -177,7 +263,10 @@
       a.onclick = () => {
         if(!timerActivo) {
           timerActivo = true;
-          setTimeout(() => { btn.disabled = false; msg.classList.add("hidden"); }, 300000);
+          setTimeout(() => { 
+            btn.disabled = false; 
+            msg.classList.add("hidden");
+          }, 300000); // 5 minutos
         }
       };
       contenedor.appendChild(a);
@@ -186,24 +275,55 @@
 
   function iniciarSesion() {
     const nombre = document.getElementById("nombreInput").value.trim();
-    if (nombre.length < 4 || document.getElementById("passInput").value !== MI_CONTRASEÑA) return alert("Datos incorrectos");
+    const pass = document.getElementById("passInput").value;
+    
+    if (nombre.length < 4) {
+      return alert("Por favor ingresa un nombre válido (mínimo 4 caracteres)");
+    }
+    if (pass !== MI_CONTRASEÑA) {
+      return alert("Contraseña incorrecta");
+    }
+    
     localStorage.setItem("nombreBiblia", nombre);
     mostrarPanel(nombre);
   }
 
   function enviarRegistro() {
     submitted = true;
-    document.getElementById("entry_nombre").value = localStorage.getItem("nombreBiblia");
-    document.getElementById("entry_fecha").value = "Día " + document.getElementById("diaCalendario").value;
+    const nombre = localStorage.getItem("nombreBiblia");
+    const dia = document.getElementById("diaCalendario").value;
+    
+    document.getElementById("entry_nombre").value = nombre;
+    document.getElementById("entry_fecha").value = "Día " + dia;
     document.getElementById("entry_estado").value = "COMPLETADO";
+    
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
-    historial.push(document.getElementById("diaCalendario").value);
-    localStorage.setItem("historialLecturas", JSON.stringify(historial));
+    if (!historial.includes(dia)) {
+      historial.push(dia);
+      localStorage.setItem("historialLecturas", JSON.stringify(historial));
+    }
+    
     document.getElementById("googleForm").submit();
   }
 
-  function finalizarEnvio() { actualizarVideos(); }
-  function borrarRegistro() { localStorage.clear(); location.reload(); }
+  function finalizarEnvio() {
+    actualizarVideos();
+    setTimeout(() => {
+      const okDiv = document.getElementById("confirmacion-ok");
+      if (okDiv && !okDiv.classList.contains("hidden")) {
+        setTimeout(() => {
+          okDiv.classList.add("hidden");
+        }, 3000);
+      }
+    }, 500);
+  }
+  
+  function borrarRegistro() {
+    if (confirm("¿Estás seguro que deseas salir? Se borrará tu progreso.")) {
+      localStorage.clear();
+      location.reload();
+    }
+  }
 </script>
 </body>
 </html>
