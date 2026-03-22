@@ -63,25 +63,25 @@
     </div>
     
     <div class="selector-recuperacion">
-      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día de lectura:</label>
+      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día:</label>
       <select id="diaCalendario" onchange="actualizarVideos()"></select>
     </div>
 
     <div id="contenedor-videos"></div>
 
     <div id="msg-espera" class="alerta">
-      ⏳ Observa la lectura para confirmar
+      ⏳ El botón se activará en unos minutos
     </div>
 
     <button id="btnConfirmar" class="boton btn-confirmar" disabled onclick="enviarRegistro()">
-      ✅ Confirmar Lectura Realizada
+      ✅ Confirmar Lectura
     </button>
 
     <div id="confirmacion-ok" class="hidden success-card">
-      🙌 ¡Ya has registrado esta lectura! Dios te bendiga.
+      🙌 ¡Registro exitoso!
     </div>
 
-    <div class="link-reset" onclick="borrarRegistro()">Cambiar de usuario / Salir</div>
+    <div class="link-reset" onclick="borrarRegistro()">Salir</div>
   </div>
 </div>
 
@@ -97,73 +97,25 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
 
+  // LISTA DE VIDEOS LIMPIOS (DEL PDF)
   const baseVideos = {
-    79: "https://youtu.be/rglJ0AORudc",
-    80: "https://youtu.be/7EqYkjlO8",
-    81: "https://youtu.be/JUeyW2BGS1s",
-    82: "https://youtu.be/5hSVXa4EQZY",
-    83: "https://youtu.be/IDA_CHN33-4",
-    84: "https://youtu.be/aUlsrD358Zk",
-    85: "https://youtu.be/hqlmHfVv7wQ",
-    86: "https://youtu.be/5RADyJrE4gl",
-    87: "https://youtu.be/F8-ZdFMMJN4",
-    88: "https://youtu.be/A5kX851eY5c",
-    89: "https://youtu.be/7BggxHnMM6k",
-    90: "https://youtu.be/koYFcNfdaxk",
-    91: "https://youtu.be/4y-Gl85B8g0",
-    92: "https://youtu.be/nn2ppTXIc6Q",
-    93: "https://youtu.be/d2mjv9ijZgl",
-    94: "https://youtu.be/-uMqTWUIptl",
-    95: "https://youtu.be/lFhBQBvc6GI",
-    96: "https://youtu.be/MdE1Hm30sRk",
-    97: "https://youtu.be/1Q7Yvfa2zy8",
-    98: "https://youtu.be/aO74jz5uGSY",
-    99: "https://youtu.be/1zMGeMHlaUo",
-    100: "https://youtu.be/-WudKb4K4Ok",
-    101: "https://youtu.be/PXsZcyMJQMg",
-    102: "https://youtu.be/Vd8yRXBtQoE",
-    103: "https://youtu.be/rLx7KMkDEIc",
-    104: "https://youtu.be/CQoYVhGVjfY",
-    105: "https://youtu.be/aoW7liAAVY",
-    106: "https://youtu.be/NmCXEd4rbl",
-    107: "https://youtu.be/FO2HqU_oK5M",
-    108: "https://youtu.be/RCbny6COTXM",
-    109: "https://youtu.be/Ep5jFu5Pv7A",
-    110: "https://youtu.be/LEPj3JW8pf0",
-    111: "https://youtu.be/S0rpwD8KFnk",
-    112: "https://youtu.be/ofg8J7nAqE8",
-    113: "https://youtu.be/mRddZos2sg",
-    114: "https://youtu.be/iex8YtC-PLE",
-    115: "https://youtu.be/6PCYHd8nYLc",
-    116: "https://youtu.be/nlGazwlhYjY",
-    117: "https://youtu.be/LSp3h77iVRw",
-    118: "https://youtu.be/zTUN6WTY54",
-    119: "https://youtu.be/JycQkBd7Zw",
-    120: "https://youtu.be/7Xog1R8Wuo",
-    121: "https://youtu.be/WIbSCZyN-vI",
-    122: "https://youtu.be/VctQbiuAb48",
-    123: "https://youtu.be/B92cxtaHMyA",
-    124: "https://youtu.be/ySOOLWWPu20",
-    125: "https://youtu.be/Raw2y-Ol1lc",
-    126: "https://youtu.be/3e4VMX3suEA",
-    127: "https://youtu.be/3e4VMX3suEA",
-    128: "https://youtu.be/2x8cr5ynTA4",
-    129: "https://youtu.be/TheZlL1jhYU",
-    130: "https://youtu.be/Nn40T-A7XXM",
-    131: "https://youtu.be/kqRJdoQnRyg",
-    132: "https://youtu.be/ivLD36ZX53Y",
-    133: "https://youtu.be/yEw91yTEg6A",
-    134: "https://youtu.be/bDmu4IKzTLs",
-    135: "https://youtu.be/HtQ0ovqMSjk",
-    136: "https://youtu.be/02iUVz7EOV0",
-    137: "https://youtu.be/BnMKliHTxo",
-    138: "https://youtu.be/nvTioRdwQjo",
-    139: "https://youtu.be/7Uc-VQmEeGM",
-    140: "https://youtu.be/VMuoz1RTzPg",
-    141: "https://youtu.be/7s4rV29hmmM",
-    142: "https://youtu.be/Mqsfielp5cA",
-    143: "https://youtu.be/qOy5k1Qn3tl",
-    144: "https://youtu.be/ELOLDEDDqXI"
+    79: "rglJ0AORudc", 80: "7EqYkjlO8", 81: "JUeyW2BGS1s", 82: "5hSVXa4EQZY",
+    83: "IDA_CHN33-4", 84: "aUlsrD358Zk", 85: "hqlmHfVv7wQ", 86: "5RADyJrE4gl",
+    87: "F8-ZdFMMJN4", 88: "A5kX851eY5c", 89: "7BggxHnMM6k", 90: "koYFcNfdaxk",
+    91: "4y-Gl85B8g0", 92: "nn2ppTXIc6Q", 93: "d2mjv9ijZgl", 94: "-uMqTWUIptl",
+    95: "lFhBQBvc6GI", 96: "MdE1Hm30sRk", 97: "1Q7Yvfa2zy8", 98: "aO74jz5uGSY",
+    99: "1zMGeMHlaUo", 100: "-WudKb4K4Ok", 101: "PXsZcyMJQMg", 102: "Vd8yRXBtQoE",
+    103: "rLx7KMkDEIc", 104: "CQoYVhGVjfY", 105: "aoW7liAAVY", 106: "NmCXEd4rbl",
+    107: "FO2HqU_oK5M", 108: "RCbny6COTXM", 109: "Ep5jFu5Pv7A", 110: "LEPj3JW8pf0",
+    111: "S0rpwD8KFnk", 112: "ofg8J7nAqE8", 113: "mRddZos2sg", 114: "iex8YtC-PLE",
+    115: "6PCYHd8nYLc", 116: "nlGazwlhYjY", 117: "LSp3h77iVRw", 118: "zTUN6WTY54",
+    119: "JycQkBd7Zw", 120: "7Xog1R8Wuo", 121: "WIbSCZyN-vI", 122: "VctQbiuAb48",
+    123: "B92cxtaHMyA", 124: "ySOOLWWPu20", 125: "Raw2y-Ol1lc", 126: "3e4VMX3suEA",
+    127: "3e4VMX3suEA", 128: "2x8cr5ynTA4", 129: "TheZlL1jhYU", 130: "Nn40T-A7XXM",
+    131: "kqRJdoQnRyg", 132: "ivLD36ZX53Y", 133: "yEw91yTEg6A", 134: "bDmu4IKzTLs",
+    135: "HtQ0ovqMSjk", 136: "02iUVz7EOV0", 137: "BnMKliHTxo", 138: "nvTioRdwQjo",
+    139: "7Uc-VQmEeGM", 140: "VMuoz1RTzPg", 141: "7s4rV29hmmM", 142: "Mqsfielp5cA",
+    143: "qOy5k1Qn3tl", 144: "ELOLDEDDqXI"
   };
 
   window.onload = function() {
@@ -186,15 +138,10 @@
     
     const ahora = new Date();
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
-    const dif = ahora - inicioAño;
-    const unDia = 1000 * 60 * 60 * 24;
-    const diaHoy = Math.floor(dif / unDia);
+    const diaHoy = Math.floor((ahora - inicioAño) / (1000 * 60 * 60 * 24));
 
     const selector = document.getElementById("diaCalendario");
-    selector.innerHTML = "";
-    
-    // Mostramos desde el día 79 hasta el día de hoy
-    for (let d = 79; d <= diaHoy; d++) {
+    for (let d = 79; d <= 144; d++) {
         if (baseVideos[d]) {
             let opt = document.createElement("option");
             opt.value = d;
@@ -202,8 +149,7 @@
             selector.add(opt);
         }
     }
-    
-    selector.value = diaHoy; 
+    selector.value = Math.min(diaHoy, 144); 
     actualizarVideos();
   }
 
@@ -220,55 +166,44 @@
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     
     if (historial.includes(diaNum.toString())) {
-      btn.classList.add("hidden");
-      msg.classList.add("hidden");
-      ok.classList.remove("hidden");
+      btn.classList.add("hidden"); msg.classList.add("hidden"); ok.classList.remove("hidden");
     } else {
-      btn.classList.remove("hidden");
-      btn.disabled = true;
-      msg.classList.remove("hidden");
-      ok.classList.add("hidden");
-
-      if (baseVideos[diaNum]) {
-        const a = document.createElement("a");
-        a.className = "boton btn-video";
-        a.target = "_blank"; a.href = baseVideos[diaNum];
-        a.innerHTML = "📖 Ver Lectura del Día " + diaNum;
-        a.onclick = () => {
-          if(!timerActivo) {
-            timerActivo = true;
-            // Botón se activa después de 5 minutos
-            setTimeout(() => { btn.disabled = false; msg.classList.add("hidden"); }, 300000);
-          }
-        };
-        contenedor.appendChild(a);
-      }
+      btn.classList.remove("hidden"); btn.disabled = true; msg.classList.remove("hidden"); ok.classList.add("hidden");
+      const a = document.createElement("a");
+      a.className = "boton btn-video";
+      a.target = "_blank";
+      a.href = "https://www.youtube.com/watch?v=" + baseVideos[diaNum];
+      a.innerHTML = "📖 Abrir Video del Día " + diaNum;
+      a.onclick = () => {
+        if(!timerActivo) {
+          timerActivo = true;
+          setTimeout(() => { btn.disabled = false; msg.classList.add("hidden"); }, 300000);
+        }
+      };
+      contenedor.appendChild(a);
     }
   }
 
   function iniciarSesion() {
     const nombre = document.getElementById("nombreInput").value.trim();
-    const pass = document.getElementById("passInput").value;
-    if (nombre.length < 4 || pass !== MI_CONTRASEÑA) return alert("Datos incorrectos");
+    if (nombre.length < 4 || document.getElementById("passInput").value !== MI_CONTRASEÑA) return alert("Datos incorrectos");
     localStorage.setItem("nombreBiblia", nombre);
     mostrarPanel(nombre);
   }
 
   function enviarRegistro() {
-    const nombre = localStorage.getItem("nombreBiblia");
-    const dia = document.getElementById("diaCalendario").value;
-    document.getElementById("entry_nombre").value = nombre;
-    document.getElementById("entry_fecha").value = "Día " + dia;
+    submitted = true;
+    document.getElementById("entry_nombre").value = localStorage.getItem("nombreBiblia");
+    document.getElementById("entry_fecha").value = "Día " + document.getElementById("diaCalendario").value;
     document.getElementById("entry_estado").value = "COMPLETADO";
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
-    historial.push(dia);
+    historial.push(document.getElementById("diaCalendario").value);
     localStorage.setItem("historialLecturas", JSON.stringify(historial));
-    submitted = true;
     document.getElementById("googleForm").submit();
   }
 
   function finalizarEnvio() { actualizarVideos(); }
-  function borrarRegistro() { if(confirm("¿Cerrar sesión?")) { localStorage.clear(); location.reload(); } }
+  function borrarRegistro() { localStorage.clear(); location.reload(); }
 </script>
 </body>
 </html>
