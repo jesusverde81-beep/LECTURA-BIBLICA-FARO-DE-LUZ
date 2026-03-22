@@ -63,7 +63,7 @@
     </div>
     
     <div class="selector-recuperacion">
-      <label id="labelSelector" style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día de lectura:</label>
+      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día de lectura:</label>
       <select id="diaCalendario" onchange="actualizarVideos()"></select>
     </div>
 
@@ -131,42 +131,50 @@
   };
 
   const baseVideos = {
-    // CORREGIDOS 79-87
-    79: "https://youtu.be/rglJ0AORudc", 80: "https://youtu.be/7EqYkjlO8", 
-    81: "https://youtu.be/JUeyW2BGS1s", 82: "https://youtu.be/5hSVXa4EQZY", 
-    83: "https://youtu.be/IDA_CHN33-4", 84: "https://youtu.be/aUlsrD358Zk", 
-    85: "https://youtu.be/hqlmHfVv7wQ", 86: "https://youtu.be/5RADyJrE4gl", 
-    87: "https://youtu.be/F8-ZdFMMJN4",
-    // NUEVA LISTA 88-144
-    88: "https://youtu.be/A5kX851eY5c", 89: "https://youtu.be/7BggxHnMM6k",
-    90: "https://youtu.be/koYFcNfdaxk", 91: "https://youtu.be/4y-Gl85B8g0",
-    92: "https://youtu.be/nn2ppTXIc6Q", 93: "https://youtu.be/d2mjv9ijZgl",
-    94: "https://youtu.be/-uMqTWUIptl", 95: "https://youtu.be/lFhBQBvc6GI",
-    96: "https://youtu.be/MdE1Hm30sRk", 97: "https://youtu.be/1Q7Yvfa2zy8",
-    98: "https://youtu.be/aO74jz5uGSY", 99: "https://youtu.be/1zMGeMHlaUo",
-    100: "https://youtu.be/-WudKb4K4Ok", 101: "https://youtu.be/PXsZcyMJQMg",
-    102: "https://youtu.be/Vd8yRXBtQoE", 103: "https://youtu.be/rLx7KMkDEIc",
-    104: "https://youtu.be/CQoYVhGVjfY", 105: "https://youtu.be/aoW7liAAVY",
-    106: "https://youtu.be/NmCXEd4rbl", 107: "https://youtu.be/FO2HqU_oK5M",
-    108: "https://youtu.be/RCbny6COTXM", 109: "https://youtu.be/Ep5jFu5Pv7A",
-    110: "https://youtu.be/LEPj3JW8pf0", 111: "https://youtu.be/S0rpwD8KFnk",
-    112: "https://youtu.be/ofg8J7nAqE8", 113: "https://youtu.be/mRddZos2sg",
-    114: "https://youtu.be/iex8YtC-PLE", 115: "https://youtu.be/6PCYHd8nYLc",
-    116: "https://youtu.be/nlGazwlhYjY", 117: "https://youtu.be/LSp3h77iVRw",
-    118: "https://youtu.be/zTUN6WTY54", 119: "https://youtu.be/JycQkBd7Zw",
-    120: "https://youtu.be/7Xog1R8Wuo", 121: "https://youtu.be/WIbSCZyN-vI",
-    122: "https://youtu.be/VctQbiuAb48", 123: "https://youtu.be/B92cxtaHMyA",
-    124: "https://youtu.be/ySOOLWWPu20", 125: "https://youtu.be/Raw2y-Ol1lc",
-    126: "https://youtu.be/3e4VMX3suEA", 127: "https://youtu.be/3e4VMX3suEA",
-    128: "https://youtu.be/2x8cr5ynTA4", 129: "https://youtu.be/TheZlL1jhYU",
-    130: "https://youtu.be/Nn40T-A7XXM", 131: "https://youtu.be/kqRJdoQnRyg",
-    132: "https://youtu.be/ivLD36ZX53Y", 133: "https://youtu.be/yEw91yTEg6A",
-    134: "https://youtu.be/bDmu4IKzTLs", 135: "https://youtu.be/HtQ0ovqMSjk",
-    136: "https://youtu.be/02iUVz7EOV0", 137: "https://youtu.be/BnMKliHTxo",
-    138: "https://youtu.be/nvTioRdwQjo", 139: "https://youtu.be/7Uc-VQmEeGM",
-    140: "https://youtu.be/VMuoz1RTzPg", 141: "https://youtu.be/7s4rV29hmmM",
-    142: "https://youtu.be/Mqsfielp5cA", 143: "https://youtu.be/qOy5k1Qn3tl",
-    144: "https://youtu.be/ELOLDEDDqXI"
+    57: "https://youtu.be/YoOFzk_s_70", 58: "https://youtu.be/vFaJvzHo-uQ",
+    59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYKA",
+    61: "https://youtu.be/y0QXgwhvpv4", 62: "https://youtu.be/k4C1cWcXJ-A",
+    63: "https://youtu.be/xhjPfGvpIM", 64: "https://youtu.be/-x2bisbPttA",
+    65: "https://youtu.be/eMtS9yJ0pOk", 66: "https://youtu.be/AV9sU9oo1Ks",
+    67: "https://youtu.be/AV9sU9oo1Ks", 68: "https://youtu.be/Fhqjt_ZGkME",
+    69: "https://youtu.be/t-Ky7Spz4UA", 70: "https://youtu.be/oszXIjt-a6g",
+    71: "https://youtu.be/IKQHc15xytA", 72: "https://youtu.be/6LjFmazVII8",
+    73: "https://youtu.be/jbp-vBYJcX0", 74: "https://youtu.be/9JRMFQOksnA",
+    75: "https://youtu.be/ABguF6QtcpA", 76: "https://youtu.be/hYRdfnxfjLw",
+    77: "https://youtu.be/xqY8yN4yM2w", 78: "https://youtu.be/Hyv3spEvV-A",
+    79: "https://youtu.be/rglJ0AORudc", 80: "https://youtu.be/7EqYkjlO8_8",
+    81: "https://youtu.be/JUeyW2BGS1s", 82: "https://youtu.be/5hSVXa4EQZY",
+    83: "https://youtu.be/IDA_CHN33-4", 84: "https://youtu.be/aUlsrD358Zk",
+    85: "https://youtu.be/hqlmHfVv7wQ", 86: "https://youtu.be/5RADyJrE4gl",
+    87: "https://youtu.be/F8-ZdFMMJN4", 88: "https://youtu.be/A5kX851eY5c",
+    89: "https://youtu.be/7BggxHnMM6k", 90: "https://youtu.be/koYFcNfdaxk",
+    91: "https://youtu.be/4y-Gl85B8g0", 92: "https://youtu.be/nn2ppTXIc6Q",
+    93: "https://youtu.be/d2mjv9ijZgl", 94: "https://youtu.be/-uMqTWUIptl",
+    95: "https://youtu.be/lFhBQBvc6GI", 96: "https://youtu.be/MdE1Hm30sRk",
+    97: "https://youtu.be/1Q7Yvfa2zy8", 98: "https://youtu.be/aO74jz5uGSY",
+    99: "https://youtu.be/1zMGeMHlaUo", 100: "https://youtu.be/-WudKb4K4Ok",
+    101: "https://youtu.be/PXsZcyMJQMg", 102: "https://youtu.be/Vd8yRXBtQoE",
+    103: "https://youtu.be/rLx7KMkDEIc", 104: "https://youtu.be/CQoYVhGVjfY",
+    105: "https://youtu.be/aoW7liAAVY", 106: "https://youtu.be/NmCXEd4rbl",
+    107: "https://youtu.be/FO2HqU_oK5M", 108: "https://youtu.be/RCbny6COTXM",
+    109: "https://youtu.be/Ep5jFu5Pv7A", 110: "https://youtu.be/LEPj3JW8pf0",
+    111: "https://youtu.be/S0rpwD8KFnk", 112: "https://youtu.be/ofg8J7nAqE8",
+    113: "https://youtu.be/mRddZos2sg", 114: "https://youtu.be/iex8YtC-PLE",
+    115: "https://youtu.be/6PCYHd8nYLc", 116: "https://youtu.be/nlGazwlhYjY",
+    117: "https://youtu.be/LSp3h77iVRw", 118: "https://youtu.be/zTUN6WTY54",
+    119: "https://youtu.be/JycQkBd7Zw", 120: "https://youtu.be/7Xog1R8Wuo",
+    121: "https://youtu.be/WIbSCZyN-vI", 122: "https://youtu.be/VctQbiuAb48",
+    123: "https://youtu.be/B92cxtaHMyA", 124: "https://youtu.be/ySOOLWWPu20",
+    125: "https://youtu.be/Raw2y-Ol1lc", 126: "https://youtu.be/3e4VMX3suEA",
+    127: "https://youtu.be/3e4VMX3suEA", 128: "https://youtu.be/2x8cr5ynTA4",
+    129: "https://youtu.be/TheZlL1jhYU", 130: "https://youtu.be/Nn40T-A7XXM",
+    131: "https://youtu.be/kqRJdoQnRyg", 132: "https://youtu.be/ivLD36ZX53Y",
+    133: "https://youtu.be/yEw91yTEg6A", 134: "https://youtu.be/bDmu4IKzTLs",
+    135: "https://youtu.be/HtQ0ovqMSjk", 136: "https://youtu.be/02iUVz7EOV0",
+    137: "https://youtu.be/BnMKliHTxo", 138: "https://youtu.be/nvTioRdwQjo",
+    139: "https://youtu.be/7Uc-VQmEeGM", 140: "https://youtu.be/VMuoz1RTzPg",
+    141: "https://youtu.be/7s4rV29hmmM", 142: "https://youtu.be/Mqsfielp5cA",
+    143: "https://youtu.be/qOy5k1Qn3tl", 144: "https://youtu.be/ELOLDEDDqXI"
   };
 
   window.onload = function() {
@@ -187,9 +195,8 @@
     document.getElementById("paso-lectura").classList.remove("hidden");
     document.getElementById("saludoUsuario").innerText = "¡Hola, " + nombre.split(' ')[0] + "!";
     
-    // Frase de Abril
     const ahora = new Date();
-    if (ahora.getMonth() === 3) { // 3 = Abril
+    if (ahora.getMonth() === 3) { 
         document.getElementById("fraseDia").innerText = "“" + frasesAbril[ahora.getDate()] + "”";
     }
 
@@ -201,10 +208,8 @@
     const selector = document.getElementById("diaCalendario");
     selector.innerHTML = "";
     
-    // Rango de 5 días para atrás
-    const diaInicio = Math.max(79, diaHoy - 5); 
-
-    for (let d = diaInicio; d <= diaHoy; d++) {
+    // Muestra desde el día 57 hasta el día actual
+    for (let d = 57; d <= diaHoy; d++) {
         if (baseVideos[d]) {
             let opt = document.createElement("option");
             opt.value = d;
