@@ -97,33 +97,31 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
 
-  // LISTA DE VIDEOS - IDs CORRECTOS (días 75 al 144)
+  // LISTA DE VIDEOS - TODOS LOS IDs CORREGIDOS SEGÚN LOS ENLACES PROPORCIONADOS
   const baseVideos = {
-    // Días 75-78 (NUEVOS)
     75: "ABguF6QtcpA",
     76: "hYRdfnxfjLw",
     77: "xqY8yN4yM2w",
     78: "Hyv3spEvV-A",
-    // Días 79-144 (existentes y corregidos)
     79: "rgIJ0AORudc",
     80: "7EqY_k_jlO8",
     81: "JUeyW2BGS1s",
     82: "5hSVXa4EQZY",
     83: "IDA_CHN33-4",
-    84: "aUlrsD358Zk",
-    85: "hqImHfVv7wQ",
-    86: "5RADyJrE4gl",
+    84: "aUIsrD358Zk",      // CORREGIDO: aUIsrD358Zk
+    85: "hqlmHfVv7wQ",      // CORREGIDO: hqlmHfVv7wQ
+    86: "5RADyJrE4gI",      // CORREGIDO: 5RADyJrE4gI
     87: "F8-ZdFMMJN4",
     88: "A5kX851eY5c",
     89: "7BggxHnMM6k",
     90: "koYFcNfdaxk",
-    91: "4y-GI85B8g0",
-    92: "nn2ppTXlc6Q",
-    93: "d2mjv9ijZgl",
-    94: "-uMqTWU1plt",
-    95: "lFhBQBvcc6GI",
+    91: "4y-Gl85B8g0",      // CORREGIDO: 4y-Gl85B8g0
+    92: "nn2ppTXIc6Q",      // CORREGIDO: nn2ppTXIc6Q
+    93: "d2mjv9ijZgI",      // CORREGIDO: d2mjv9ijZgI
+    94: "-uMqTWUIptI",      // CORREGIDO: -uMqTWUIptI
+    95: "lFhBQBvc6GI",      // CORREGIDO: lFhBQBvc6GI
     96: "MdE1Hm30sRk",
-    97: "1Q7Yvfazzy8",
+    97: "1Q7Yvfa2zy8",      // CORREGIDO: 1Q7Yvfa2zy8
     98: "aO74jz5uGSY",
     99: "1zMGeMHlaUo",
     100: "-WudKb4K4Ok",
@@ -132,7 +130,7 @@
     103: "rLx7KMkDEIc",
     104: "CQoYVhGVjfY",
     105: "_aoW7liAAVY",
-    106: "N_mCXEd4rbl",
+    106: "N_mCXEd4rbI",      // CORREGIDO: N_mCXEd4rbI
     107: "FO2HqU_oK5M",
     108: "RCbny6COTxM",
     109: "Ep5jFu5Pv7A",
@@ -142,34 +140,34 @@
     113: "m_RddZos2sg",
     114: "iex8YtC-PLE",
     115: "6PCYHd8nYLc",
-    116: "nlGazwlhYi",
+    116: "nIGazwlhYjY",      // CORREGIDO: nIGazwlhYjY
     117: "LSp3h77iVRw",
-    118: "zTUN6WTY54",
+    118: "zTUN6WTY_54",      // CORREGIDO: zTUN6WTY_54
     119: "JycQk_Bd7Zw",
-    120: "7Xog1R8Wuo",
-    121: "WIbSCZyN-vl",
+    120: "7Xog1R_8Wuo",      // CORREGIDO: 7Xog1R_8Wuo
+    121: "WIbSCZyN-vI",      // CORREGIDO: WIbSCZyN-vI
     122: "VctQbiuAb48",
-    123: "B92cxtaHMya",
-    124: "ySOOLWWPu20",
+    123: "B92cxtaHMyA",      // CORREGIDO: B92cxtaHMyA
+    124: "ySO0LWWPu20",      // CORREGIDO: ySO0LWWPu20
     125: "Raw2y-Ol1lc",
     126: "3e4VMX3suEA",
-    127: "3e4VMX3suEA",
+    127: "ZNhMVGnU9uc",      // CORREGIDO: ZNhMVGnU9uc (nuevo enlace)
     128: "2x8cr5ynTA4",
-    129: "TheZIL1jhYU",
+    129: "TheZlL1jhYU",      // CORREGIDO: TheZlL1jhYU
     130: "Nn40T-A7XXM",
     131: "kqRJdoQnRyg",
-    132: "ivLDS6ZX53Y",
+    132: "ivLD36ZX53Y",      // CORREGIDO: ivLD36ZX53Y
     133: "yEw91yTEg6A",
     134: "bDmu4IKzTLs",
     135: "HtQ0ovqMSjk",
     136: "02iUVz7EOV0",
-    137: "BnMKliHTxo",
+    137: "BnMK_IiHTxo",      // CORREGIDO: BnMK_IiHTxo
     138: "nvTioRdwQjo",
     139: "7Uc-VQmEeGM",
-    140: "VMuo2lRTzPg",
+    140: "VMuoz1RTzPg",      // CORREGIDO: VMuoz1RTzPg
     141: "7s4rV29hmmM",
-    142: "Mqsfilelp5cA",
-    143: "qOy5k1Qn3tl",
+    142: "MqsfieIp5cA",      // CORREGIDO: MqsfieIp5cA
+    143: "qOy5k1Qn3tI",      // CORREGIDO: qOy5k1Qn3tI
     144: "EL0LDeDDqXI"
   };
 
@@ -213,10 +211,8 @@
     document.getElementById("saludoUsuario").innerText = "¡Hola, " + nombre.split(' ')[0] + "!";
 
     const selector = document.getElementById("diaCalendario");
-    // Limpiar opciones existentes
     selector.innerHTML = "";
     
-    // Llenar selector con días del 75 al 144 que tengan video
     for (let d = 75; d <= 144; d++) {
       if (baseVideos[d]) {
         let opt = document.createElement("option");
@@ -226,7 +222,6 @@
       }
     }
     
-    // Seleccionar el día actual si está disponible
     const ahora = new Date();
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
     const diaHoy = Math.floor((ahora - inicioAño) / (1000 * 60 * 60 * 24));
@@ -260,7 +255,6 @@
       msg.classList.remove("hidden");
       ok.classList.add("hidden");
       
-      // Crear botón de video
       const a = document.createElement("a");
       a.className = "boton btn-video";
       a.target = "_blank";
@@ -272,7 +266,7 @@
           setTimeout(() => { 
             btn.disabled = false; 
             msg.classList.add("hidden");
-          }, 300000); // 5 minutos
+          }, 300000);
         }
       };
       contenedor.appendChild(a);
