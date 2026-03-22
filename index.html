@@ -24,6 +24,7 @@
     .hidden { display: none; }
     .alerta { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; font-size: 13px; margin-top: 15px; border: 1px solid #ffeeba; }
     .success-card { background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid #c3e6cb; font-weight: bold; }
+    .frase-motivacion { font-style: italic; color: #555; margin: 15px 0; font-size: 14px; min-height: 40px; }
     input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
     .link-reset { font-size: 11px; color: #999; margin-top: 25px; cursor: pointer; text-decoration: underline; }
   </style>
@@ -46,6 +47,8 @@
   <div id="paso-lectura" class="hidden">
     <div class="badge-info">META: TERMINAR EL 31 DE DIC</div>
     <h2 id="saludoUsuario" style="color: #2e7d32; margin-top: 15px; margin-bottom: 5px;"></h2>
+    
+    <div id="fraseDia" class="frase-motivacion"></div>
 
     <div class="contador-caja">
       <div class="contador-item">
@@ -94,25 +97,76 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
 
+  const frasesAbril = {
+    1: "¡Felicidades por llegar hasta aquí! Tu constancia es el mejor reflejo de tu fe.",
+    2: "Un día a la vez, una palabra a la vez. ¡Sigue adelante!",
+    3: "La Biblia es el mapa para que tus pies nunca se pierdan.",
+    4: "Que la lectura de hoy sea el alimento que fortalezca tu alma.",
+    5: "Cada capítulo leído es una semilla de paz plantada en tu corazón.",
+    6: "No te rindas; la disciplina de hoy es la victoria de mañana.",
+    7: "Leer la Biblia es hablar con Dios. Escucha lo que tiene para ti hoy.",
+    8: "La luz de Su palabra ilumina hasta el rincón más oscuro de tu día.",
+    9: "La constancia no es perfección, es perseverancia. ¡Vas muy bien!",
+    10: "Encuentra hoy en estas líneas el descanso que tu mente necesita.",
+    11: "Tu fidelidad en lo poco te prepara para cosas grandes.",
+    12: "¡Ánimo! Leer la Biblia nos enseña a vivir con esperanza.",
+    13: "Que la sabiduría de Dios guíe cada una de tus decisiones hoy.",
+    14: "Estás construyendo tu casa sobre la roca. ¡Sigue firme!",
+    15: "A mitad de mes y tu luz sigue brillando. ¡No te detengas!",
+    16: "La Palabra de Dios es nueva cada mañana. Descubre algo nuevo hoy.",
+    17: "Un corazón lleno de Su palabra es un corazón lleno de fortaleza.",
+    18: "No solo lees un libro, estás conociendo el corazón de tu Creador.",
+    19: "Tómate este tiempo para ti y para Dios. Es el mejor momento del día.",
+    20: "Si te sientes cansado, deja que estas palabras te den nuevas fuerzas.",
+    21: "La Biblia es el espejo donde vemos nuestro verdadero propósito.",
+    22: "Que nada te quite el gozo de meditar en Su ley día y noche.",
+    23: "Tu compromiso con la lectura es un testimonio para los que te rodean.",
+    24: "Busca hoy la promesa que Dios ha escrito especialmente para ti.",
+    25: "¡Casi terminamos abril! Tu persistencia es admirable.",
+    26: "La paz de Dios sobrepasa todo entendimiento. Encuéntrala en Su lectura.",
+    27: "Un pequeño paso cada día te lleva a la meta final.",
+    28: "Dios bendice al que busca Su sabiduría con diligencia.",
+    29: "Tu vida se transforma a medida que guardas Su palabra.",
+    30: "¡Victoria! Cerramos abril con éxito. ¡Mañana comenzamos un nuevo mes de luz!"
+  };
+
   const baseVideos = {
-    55: "https://youtu.be/OpEIpV2J5vw", 56: "https://youtu.be/O9Tt151L1hc",
-    57: "https://youtu.be/YoOFzk_s_70", 58: "https://youtu.be/vFaJvzHo-uQ",
-    59: "https://youtu.be/nKHy5Kk6Gk4", 60: "https://youtu.be/d4cDERhAYKA",
-    61: "https://youtu.be/y0QXgwhvpv4", 62: "https://youtu.be/k4C1cWcXJ-A",
-    63: "https://youtu.be/xhjPfGv_pIM", 64: "https://youtu.be/-x2bisbPttA",
-    65: "https://youtu.be/eMtS9yJ0pOk", 66: "https://youtu.be/AV9sU9oo1Ks",
-    67: "https://youtu.be/AV9sU9oo1Ks", 68: "https://youtu.be/Fhqjt_ZGkME",
-    69: "https://youtu.be/t-Ky7Spz4UA", 
-    70: "https://youtu.be/oszXIjt-a6g", // ENLACE CORREGIDO CON 'I' MAYÚSCULA
-    71: "https://youtu.be/IKQHc15xytA", 72: "https://youtu.be/6LjFmazVII8",
-    73: "https://youtu.be/jbp-vBYJcX0", 74: "https://youtu.be/9JRMFQOksnA",
-    75: "https://youtu.be/ABguF6QtcpA", 76: "https://youtu.be/hYRdfnxfjLw",
-    77: "https://youtu.be/xqY8yN4yM2w", 78: "https://youtu.be/Hyv3spEvV-A",
-    79: "https://youtu.be/rglJ0AORudc", 80: "https://youtu.be/7EqYkjlO8_8",
-    81: "https://youtu.be/JUeyW2BGS1s", 82: "https://youtu.be/5hSVXa4EQZY",
-    83: "https://youtu.be/IDA_CHN33-4", 84: "https://youtu.be/aUlsrD358Zk",
-    85: "https://youtu.be/hqlmHfVv7wQ", 86: "https://youtu.be/5RADyJrE4gl",
-    87: "https://youtu.be/F8-ZdFMMJN4"
+    // CORREGIDOS 79-87
+    79: "https://youtu.be/rglJ0AORudc", 80: "https://youtu.be/7EqYkjlO8", 
+    81: "https://youtu.be/JUeyW2BGS1s", 82: "https://youtu.be/5hSVXa4EQZY", 
+    83: "https://youtu.be/IDA_CHN33-4", 84: "https://youtu.be/aUlsrD358Zk", 
+    85: "https://youtu.be/hqlmHfVv7wQ", 86: "https://youtu.be/5RADyJrE4gl", 
+    87: "https://youtu.be/F8-ZdFMMJN4",
+    // NUEVA LISTA 88-144
+    88: "https://youtu.be/A5kX851eY5c", 89: "https://youtu.be/7BggxHnMM6k",
+    90: "https://youtu.be/koYFcNfdaxk", 91: "https://youtu.be/4y-Gl85B8g0",
+    92: "https://youtu.be/nn2ppTXIc6Q", 93: "https://youtu.be/d2mjv9ijZgl",
+    94: "https://youtu.be/-uMqTWUIptl", 95: "https://youtu.be/lFhBQBvc6GI",
+    96: "https://youtu.be/MdE1Hm30sRk", 97: "https://youtu.be/1Q7Yvfa2zy8",
+    98: "https://youtu.be/aO74jz5uGSY", 99: "https://youtu.be/1zMGeMHlaUo",
+    100: "https://youtu.be/-WudKb4K4Ok", 101: "https://youtu.be/PXsZcyMJQMg",
+    102: "https://youtu.be/Vd8yRXBtQoE", 103: "https://youtu.be/rLx7KMkDEIc",
+    104: "https://youtu.be/CQoYVhGVjfY", 105: "https://youtu.be/aoW7liAAVY",
+    106: "https://youtu.be/NmCXEd4rbl", 107: "https://youtu.be/FO2HqU_oK5M",
+    108: "https://youtu.be/RCbny6COTXM", 109: "https://youtu.be/Ep5jFu5Pv7A",
+    110: "https://youtu.be/LEPj3JW8pf0", 111: "https://youtu.be/S0rpwD8KFnk",
+    112: "https://youtu.be/ofg8J7nAqE8", 113: "https://youtu.be/mRddZos2sg",
+    114: "https://youtu.be/iex8YtC-PLE", 115: "https://youtu.be/6PCYHd8nYLc",
+    116: "https://youtu.be/nlGazwlhYjY", 117: "https://youtu.be/LSp3h77iVRw",
+    118: "https://youtu.be/zTUN6WTY54", 119: "https://youtu.be/JycQkBd7Zw",
+    120: "https://youtu.be/7Xog1R8Wuo", 121: "https://youtu.be/WIbSCZyN-vI",
+    122: "https://youtu.be/VctQbiuAb48", 123: "https://youtu.be/B92cxtaHMyA",
+    124: "https://youtu.be/ySOOLWWPu20", 125: "https://youtu.be/Raw2y-Ol1lc",
+    126: "https://youtu.be/3e4VMX3suEA", 127: "https://youtu.be/3e4VMX3suEA",
+    128: "https://youtu.be/2x8cr5ynTA4", 129: "https://youtu.be/TheZlL1jhYU",
+    130: "https://youtu.be/Nn40T-A7XXM", 131: "https://youtu.be/kqRJdoQnRyg",
+    132: "https://youtu.be/ivLD36ZX53Y", 133: "https://youtu.be/yEw91yTEg6A",
+    134: "https://youtu.be/bDmu4IKzTLs", 135: "https://youtu.be/HtQ0ovqMSjk",
+    136: "https://youtu.be/02iUVz7EOV0", 137: "https://youtu.be/BnMKliHTxo",
+    138: "https://youtu.be/nvTioRdwQjo", 139: "https://youtu.be/7Uc-VQmEeGM",
+    140: "https://youtu.be/VMuoz1RTzPg", 141: "https://youtu.be/7s4rV29hmmM",
+    142: "https://youtu.be/Mqsfielp5cA", 143: "https://youtu.be/qOy5k1Qn3tl",
+    144: "https://youtu.be/ELOLDEDDqXI"
   };
 
   window.onload = function() {
@@ -128,37 +182,28 @@
     document.getElementById("diasFaltan").innerText = diff > 0 ? diff : 0;
   }
 
-  function iniciarSesion() {
-    const nombre = document.getElementById("nombreInput").value.trim();
-    const pass = document.getElementById("passInput").value;
-    if (nombre.length < 4 || pass !== MI_CONTRASEÑA) return alert("Datos incorrectos");
-    localStorage.setItem("nombreBiblia", nombre);
-    mostrarPanel(nombre);
-  }
-
   function mostrarPanel(nombre) {
     document.getElementById("paso-registro").classList.add("hidden");
     document.getElementById("paso-lectura").classList.remove("hidden");
     document.getElementById("saludoUsuario").innerText = "¡Hola, " + nombre.split(' ')[0] + "!";
     
-    const selector = document.getElementById("diaCalendario");
+    // Frase de Abril
     const ahora = new Date();
+    if (ahora.getMonth() === 3) { // 3 = Abril
+        document.getElementById("fraseDia").innerText = "“" + frasesAbril[ahora.getDate()] + "”";
+    }
+
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
     const dif = ahora - inicioAño;
     const unDia = 1000 * 60 * 60 * 24;
     const diaHoy = Math.floor(dif / unDia);
 
-    // Mantenemos la recuperación especial por ser hoy 11-12 de marzo
-    let diaInicio;
-    if (diaHoy >= 70 && diaHoy <= 71) {
-        diaInicio = 55; 
-        document.getElementById("labelSelector").innerText = "🎁 ¡RECUPERACIÓN DE FEBRERO ACTIVA!";
-    } else {
-        diaInicio = Math.max(1, diaHoy - 5);
-        document.getElementById("labelSelector").innerText = "📅 Selecciona el día de lectura:";
-    }
-
+    const selector = document.getElementById("diaCalendario");
     selector.innerHTML = "";
+    
+    // Rango de 5 días para atrás
+    const diaInicio = Math.max(79, diaHoy - 5); 
+
     for (let d = diaInicio; d <= diaHoy; d++) {
         if (baseVideos[d]) {
             let opt = document.createElement("option");
@@ -174,10 +219,7 @@
 
   function actualizarVideos() {
     const selector = document.getElementById("diaCalendario");
-    if (!selector.value) return;
-
     const diaNum = parseInt(selector.value);
-    const diaKey = diaNum.toString();
     const contenedor = document.getElementById("contenedor-videos");
     const btn = document.getElementById("btnConfirmar");
     const msg = document.getElementById("msg-espera");
@@ -187,7 +229,7 @@
     timerActivo = false;
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     
-    if (historial.includes(diaKey)) {
+    if (historial.includes(diaNum.toString())) {
       btn.classList.add("hidden");
       msg.classList.add("hidden");
       ok.classList.remove("hidden");
@@ -205,17 +247,20 @@
         a.onclick = () => {
           if(!timerActivo) {
             timerActivo = true;
-            setTimeout(() => { 
-                if(parseInt(document.getElementById("diaCalendario").value) === diaNum) {
-                    btn.disabled = false; 
-                    msg.classList.add("hidden"); 
-                }
-            }, 300000);
+            setTimeout(() => { btn.disabled = false; msg.classList.add("hidden"); }, 300000);
           }
         };
         contenedor.appendChild(a);
       }
     }
+  }
+
+  function iniciarSesion() {
+    const nombre = document.getElementById("nombreInput").value.trim();
+    const pass = document.getElementById("passInput").value;
+    if (nombre.length < 4 || pass !== MI_CONTRASEÑA) return alert("Datos incorrectos");
+    localStorage.setItem("nombreBiblia", nombre);
+    mostrarPanel(nombre);
   }
 
   function enviarRegistro() {
