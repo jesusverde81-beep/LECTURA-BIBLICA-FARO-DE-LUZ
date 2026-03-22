@@ -27,6 +27,7 @@
     .frase-motivacion { font-style: italic; color: #555; margin: 15px 0; font-size: 14px; min-height: 40px; }
     input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
     .link-reset { font-size: 11px; color: #999; margin-top: 25px; cursor: pointer; text-decoration: underline; }
+    .dias-pasados-badge { background: #e8f5e9; color: #2e7d32; padding: 8px; border-radius: 8px; font-size: 12px; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -63,8 +64,9 @@
     </div>
     
     <div class="selector-recuperacion">
-      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día:</label>
+      <label style="display:block; margin-bottom:8px; font-weight:bold; color:#856404;">📅 Selecciona el día (solo hasta hoy):</label>
       <select id="diaCalendario" onchange="actualizarVideos()"></select>
+      <div id="infoDiasPasados" class="dias-pasados-badge"></div>
     </div>
 
     <div id="contenedor-videos"></div>
@@ -96,8 +98,9 @@
   let submitted = false;
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
+  const DIA_INICIO_RETO = 75; // Día 75 es el primer día del reto
 
-  // LISTA DE VIDEOS - TODOS LOS IDs CORREGIDOS SEGÚN LOS ENLACES PROPORCIONADOS
+  // LISTA DE VIDEOS - TODOS LOS IDs CORREGIDOS
   const baseVideos = {
     75: "ABguF6QtcpA",
     76: "hYRdfnxfjLw",
@@ -108,20 +111,20 @@
     81: "JUeyW2BGS1s",
     82: "5hSVXa4EQZY",
     83: "IDA_CHN33-4",
-    84: "aUIsrD358Zk",      // CORREGIDO: aUIsrD358Zk
-    85: "hqlmHfVv7wQ",      // CORREGIDO: hqlmHfVv7wQ
-    86: "5RADyJrE4gI",      // CORREGIDO: 5RADyJrE4gI
+    84: "aUIsrD358Zk",
+    85: "hqlmHfVv7wQ",
+    86: "5RADyJrE4gI",
     87: "F8-ZdFMMJN4",
     88: "A5kX851eY5c",
     89: "7BggxHnMM6k",
     90: "koYFcNfdaxk",
-    91: "4y-Gl85B8g0",      // CORREGIDO: 4y-Gl85B8g0
-    92: "nn2ppTXIc6Q",      // CORREGIDO: nn2ppTXIc6Q
-    93: "d2mjv9ijZgI",      // CORREGIDO: d2mjv9ijZgI
-    94: "-uMqTWUIptI",      // CORREGIDO: -uMqTWUIptI
-    95: "lFhBQBvc6GI",      // CORREGIDO: lFhBQBvc6GI
+    91: "4y-Gl85B8g0",
+    92: "nn2ppTXIc6Q",
+    93: "d2mjv9ijZgI",
+    94: "-uMqTWUIptI",
+    95: "lFhBQBvc6GI",
     96: "MdE1Hm30sRk",
-    97: "1Q7Yvfa2zy8",      // CORREGIDO: 1Q7Yvfa2zy8
+    97: "1Q7Yvfa2zy8",
     98: "aO74jz5uGSY",
     99: "1zMGeMHlaUo",
     100: "-WudKb4K4Ok",
@@ -130,7 +133,7 @@
     103: "rLx7KMkDEIc",
     104: "CQoYVhGVjfY",
     105: "_aoW7liAAVY",
-    106: "N_mCXEd4rbI",      // CORREGIDO: N_mCXEd4rbI
+    106: "N_mCXEd4rbI",
     107: "FO2HqU_oK5M",
     108: "RCbny6COTxM",
     109: "Ep5jFu5Pv7A",
@@ -140,34 +143,34 @@
     113: "m_RddZos2sg",
     114: "iex8YtC-PLE",
     115: "6PCYHd8nYLc",
-    116: "nIGazwlhYjY",      // CORREGIDO: nIGazwlhYjY
+    116: "nIGazwlhYjY",
     117: "LSp3h77iVRw",
-    118: "zTUN6WTY_54",      // CORREGIDO: zTUN6WTY_54
+    118: "zTUN6WTY_54",
     119: "JycQk_Bd7Zw",
-    120: "7Xog1R_8Wuo",      // CORREGIDO: 7Xog1R_8Wuo
-    121: "WIbSCZyN-vI",      // CORREGIDO: WIbSCZyN-vI
+    120: "7Xog1R_8Wuo",
+    121: "WIbSCZyN-vI",
     122: "VctQbiuAb48",
-    123: "B92cxtaHMyA",      // CORREGIDO: B92cxtaHMyA
-    124: "ySO0LWWPu20",      // CORREGIDO: ySO0LWWPu20
+    123: "B92cxtaHMyA",
+    124: "ySO0LWWPu20",
     125: "Raw2y-Ol1lc",
     126: "3e4VMX3suEA",
-    127: "ZNhMVGnU9uc",      // CORREGIDO: ZNhMVGnU9uc (nuevo enlace)
+    127: "ZNhMVGnU9uc",
     128: "2x8cr5ynTA4",
-    129: "TheZlL1jhYU",      // CORREGIDO: TheZlL1jhYU
+    129: "TheZlL1jhYU",
     130: "Nn40T-A7XXM",
     131: "kqRJdoQnRyg",
-    132: "ivLD36ZX53Y",      // CORREGIDO: ivLD36ZX53Y
+    132: "ivLD36ZX53Y",
     133: "yEw91yTEg6A",
     134: "bDmu4IKzTLs",
     135: "HtQ0ovqMSjk",
     136: "02iUVz7EOV0",
-    137: "BnMK_IiHTxo",      // CORREGIDO: BnMK_IiHTxo
+    137: "BnMK_IiHTxo",
     138: "nvTioRdwQjo",
     139: "7Uc-VQmEeGM",
-    140: "VMuoz1RTzPg",      // CORREGIDO: VMuoz1RTzPg
+    140: "VMuoz1RTzPg",
     141: "7s4rV29hmmM",
-    142: "MqsfieIp5cA",      // CORREGIDO: MqsfieIp5cA
-    143: "qOy5k1Qn3tI",      // CORREGIDO: qOy5k1Qn3tI
+    142: "MqsfieIp5cA",
+    143: "qOy5k1Qn3tI",
     144: "EL0LDeDDqXI"
   };
 
@@ -182,6 +185,22 @@
     "🕯️ Tu palabra es una luz en mi camino",
     "❤️ Escudriñad las Escrituras"
   ];
+
+  // Función para obtener el número de día actual según el reto (día 75 = 16 de marzo aproximadamente)
+  // Calcula el día del reto basado en la fecha real
+  function getDiaRetoActual() {
+    const hoy = new Date();
+    // Fecha de inicio del reto: 16 de marzo de 2026 (día 75)
+    const fechaInicio = new Date(2026, 2, 16); // Marzo es mes 2 (0-index)
+    const diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
+    let diaReto = 75 + diffDias;
+    
+    // Limitar entre 75 y 144
+    if (diaReto < 75) diaReto = 75;
+    if (diaReto > 144) diaReto = 144;
+    
+    return diaReto;
+  }
 
   window.onload = function() {
     const nombre = localStorage.getItem("nombreBiblia");
@@ -213,23 +232,40 @@
     const selector = document.getElementById("diaCalendario");
     selector.innerHTML = "";
     
-    for (let d = 75; d <= 144; d++) {
+    const diaActual = getDiaRetoActual();
+    
+    // Mostrar solo días desde el 75 hasta el día actual (inclusive)
+    for (let d = DIA_INICIO_RETO; d <= diaActual; d++) {
       if (baseVideos[d]) {
         let opt = document.createElement("option");
         opt.value = d;
-        opt.text = "Día " + d;
+        let texto = "Día " + d;
+        if (d === diaActual) texto += " (Hoy)";
+        opt.text = texto;
         selector.add(opt);
       }
     }
     
-    const ahora = new Date();
-    const inicioAño = new Date(ahora.getFullYear(), 0, 0);
-    const diaHoy = Math.floor((ahora - inicioAño) / (1000 * 60 * 60 * 24));
-    if (diaHoy >= 75 && diaHoy <= 144 && baseVideos[diaHoy]) {
-      selector.value = diaHoy;
-    } else {
-      selector.value = 75;
+    // Mostrar información de días pendientes si hay atraso
+    const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    const diasNoLeidos = [];
+    for (let d = DIA_INICIO_RETO; d < diaActual; d++) {
+      if (!historial.includes(d.toString()) && baseVideos[d]) {
+        diasNoLeidos.push(d);
+      }
     }
+    
+    const infoDiv = document.getElementById("infoDiasPasados");
+    if (diasNoLeidos.length > 0) {
+      infoDiv.innerHTML = `📚 Tienes ${diasNoLeidos.length} día(s) pendiente(s) para recuperar: Días ${diasNoLeidos.join(", ")}`;
+      infoDiv.style.display = "block";
+    } else {
+      infoDiv.innerHTML = "✅ ¡Vas al día con tu lectura!";
+      infoDiv.style.display = "block";
+    }
+    
+    // Seleccionar el día actual por defecto
+    selector.value = diaActual;
     actualizarVideos();
   }
 
@@ -266,7 +302,7 @@
           setTimeout(() => { 
             btn.disabled = false; 
             msg.classList.add("hidden");
-          }, 300000);
+          }, 300000); // 5 minutos
         }
       };
       contenedor.appendChild(a);
@@ -308,6 +344,22 @@
 
   function finalizarEnvio() {
     actualizarVideos();
+    // Actualizar también el contador de días pendientes
+    const diaActual = getDiaRetoActual();
+    const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
+    const diasNoLeidos = [];
+    for (let d = DIA_INICIO_RETO; d < diaActual; d++) {
+      if (!historial.includes(d.toString()) && baseVideos[d]) {
+        diasNoLeidos.push(d);
+      }
+    }
+    const infoDiv = document.getElementById("infoDiasPasados");
+    if (diasNoLeidos.length > 0) {
+      infoDiv.innerHTML = `📚 Tienes ${diasNoLeidos.length} día(s) pendiente(s) para recuperar: Días ${diasNoLeidos.join(", ")}`;
+    } else {
+      infoDiv.innerHTML = "✅ ¡Vas al día con tu lectura!";
+    }
+    
     setTimeout(() => {
       const okDiv = document.getElementById("confirmacion-ok");
       if (okDiv && !okDiv.classList.contains("hidden")) {
