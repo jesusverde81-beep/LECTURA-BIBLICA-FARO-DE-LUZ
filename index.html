@@ -97,9 +97,15 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
 
-  // LISTA DE VIDEOS - IDs CORRECTOS EXTRAÍDOS DEL PDF
+  // LISTA DE VIDEOS - IDs CORRECTOS (días 75 al 144)
   const baseVideos = {
-    79: "rglJ0AORudc",
+    // Días 75-78 (NUEVOS)
+    75: "ABguF6QtcpA",
+    76: "hYRdfnxfjLw",
+    77: "xqY8yN4yM2w",
+    78: "Hyv3spEvV-A",
+    // Días 79-144 (existentes y corregidos)
+    79: "rgIJ0AORudc",
     80: "7EqY_k_jlO8",
     81: "JUeyW2BGS1s",
     82: "5hSVXa4EQZY",
@@ -210,8 +216,8 @@
     // Limpiar opciones existentes
     selector.innerHTML = "";
     
-    // Llenar selector con días del 79 al 144 que tengan video
-    for (let d = 79; d <= 144; d++) {
+    // Llenar selector con días del 75 al 144 que tengan video
+    for (let d = 75; d <= 144; d++) {
       if (baseVideos[d]) {
         let opt = document.createElement("option");
         opt.value = d;
@@ -224,10 +230,10 @@
     const ahora = new Date();
     const inicioAño = new Date(ahora.getFullYear(), 0, 0);
     const diaHoy = Math.floor((ahora - inicioAño) / (1000 * 60 * 60 * 24));
-    if (diaHoy >= 79 && diaHoy <= 144 && baseVideos[diaHoy]) {
+    if (diaHoy >= 75 && diaHoy <= 144 && baseVideos[diaHoy]) {
       selector.value = diaHoy;
     } else {
-      selector.value = 79;
+      selector.value = 75;
     }
     actualizarVideos();
   }
