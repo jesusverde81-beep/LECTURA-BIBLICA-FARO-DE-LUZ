@@ -98,14 +98,17 @@
   let submitted = false;
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
-  const DIA_INICIO_RETO = 75; // Día 75 es el primer día del reto
+  const DIA_INICIO_RETO = 75;
+  const DIA_FIN_RETO = 230;   // Ampliado hasta el día 230
 
-  // LISTA DE VIDEOS - TODOS LOS IDs CORREGIDOS
+  // LISTA COMPLETA DE VIDEOS (días 75 al 230)
   const baseVideos = {
+    // Días 75-78
     75: "ABguF6QtcpA",
     76: "hYRdfnxfjLw",
     77: "xqY8yN4yM2w",
     78: "Hyv3spEvV-A",
+    // Días 79-144 (ya corregidos anteriormente)
     79: "rgIJ0AORudc",
     80: "7EqY_k_jlO8",
     81: "JUeyW2BGS1s",
@@ -171,7 +174,94 @@
     141: "7s4rV29hmmM",
     142: "MqsfieIp5cA",
     143: "qOy5k1Qn3tI",
-    144: "EL0LDeDDqXI"
+    144: "EL0LDeDDqXI",
+    // NUEVOS DÍAS 145 AL 230
+    145: "7r1MiedJSQ4",
+    146: "MM4WLl-Z7LI",
+    147: "ZvtEL5hnWA0",
+    148: "50ooQKDQYLY",
+    149: "c_fdVxGrLxE",
+    150: "Vf9PeP4DIqs",
+    151: "HOjyivef8g8",
+    152: "5zxE3_nmsps",
+    153: "SxeENDNfZ8w",
+    154: "aRHT4R26M9E",
+    155: "hsl_IxxHxDM",
+    156: "-syxDJMPat0",
+    157: "iN9k1ELyqrs",
+    158: "7KvHD2HsrWo",
+    159: "ijq2NW4ZLy4",
+    160: "T3dxsXUvRog",
+    161: "3NvC3DDFmrY",
+    162: "FfHSwra_uJA",
+    163: "UgwGwO6kL38",
+    164: "aid2ZR5O3JY",
+    165: "IUBDK_U3EeI",
+    166: "3OSIhq7inbw",
+    167: "j7mG8Tuepkc",
+    168: "VBcQARw84ng",
+    169: "F3cNTwKJfqI",
+    170: "xbtFmquvBeA",
+    171: "ZBY7dB2MKnc",
+    172: "mheQZvDuCDU",
+    173: "aWeBqxoFZdU",
+    174: "On-7f3Tqp5c",
+    175: "LnGfwBJEvv4",
+    176: "Vrluozcd5ao",
+    177: "PhAtbdP4HVg",
+    178: "6Z7kjbGZ6gg",
+    179: "fqyuEdZEf8o",
+    180: "DtRDYDv6oXo",
+    181: "fXd5qHt_hP8",
+    182: "9WP6caPeD8A",
+    183: "bteoVZxgdOY",
+    184: "KHoXgvCPg3M",
+    185: "FUYRbujSK6s",
+    186: "Z-FT2bCEORI",
+    187: "2xQrZxfn3Xg",
+    188: "_XOSsts6g58",
+    189: "Vrl0bDImib8",
+    190: "eLl47Ae4Soc",
+    191: "cnNk5hrXZC4",
+    192: "Kb_ixZdljh0",
+    193: "hnxDtOHYrCs",
+    194: "CyS12V-gO10",
+    195: "CyS12V-gO10",  // duplicado según el usuario
+    196: "Po_CSvFTtnA",
+    197: "zzvYMLEPZtQ",
+    198: "1WHC7i8DF8U",
+    199: "t3JkFkaGwb4",
+    200: "_l5b1vw1XIU",
+    201: "pyigwfRZs8s",
+    202: "dhKohA-HBKE",
+    203: "M18GmQUio18",
+    204: "vYYJefYZ4OQ",
+    205: "dVH3S2eyRyw",
+    206: "-b2l9LVZgs0",
+    207: "yWDc9MtWGkM",
+    208: "wNPjTPbEgN4",
+    209: "dZSVkgD7cZ8",
+    210: "r4dkpmycgaA",
+    211: "pGtyJYwv0uc",
+    212: "Ovl7WcfUyyc",
+    213: "bATaFrvEgK8",
+    214: "7k5CfswiAio",
+    215: "s4zW_4akgQE",
+    216: "7lPlhdd5Sn8",
+    217: "2wXPwHECaGM",
+    218: "2wXPwHECaGM",  // duplicado según el usuario
+    219: "mUnJDXTPzx8",
+    220: "Wdw4IpaeTVw",
+    221: "6LBJUE6yR-Y",
+    222: "ZgyqYOgZg-g",
+    223: "9VOulP5FtwU",
+    224: "JaAxeNe-uVM",
+    225: "R6JDcCD8mO4",
+    226: "R6JDcCD8mO4",  // duplicado según el usuario
+    227: "z1fn14lNC2o",
+    228: "jJKEiOJg7U4",
+    229: "v6U9yJQX9Lw",
+    230: "gRDc-_cn87E"
   };
 
   // Frases motivacionales
@@ -186,18 +276,17 @@
     "❤️ Escudriñad las Escrituras"
   ];
 
-  // Función para obtener el número de día actual según el reto (día 75 = 16 de marzo aproximadamente)
-  // Calcula el día del reto basado en la fecha real
+  // Calcula el número de día del reto según la fecha actual
+  // Asume que el día 75 = 16 de marzo de 2026
   function getDiaRetoActual() {
     const hoy = new Date();
-    // Fecha de inicio del reto: 16 de marzo de 2026 (día 75)
-    const fechaInicio = new Date(2026, 2, 16); // Marzo es mes 2 (0-index)
+    const fechaInicio = new Date(2026, 2, 16); // 16 de marzo de 2026 (mes 2 = marzo)
     const diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
-    let diaReto = 75 + diffDias;
+    let diaReto = DIA_INICIO_RETO + diffDias;
     
-    // Limitar entre 75 y 144
-    if (diaReto < 75) diaReto = 75;
-    if (diaReto > 144) diaReto = 144;
+    // Limitar entre el inicio y el fin del reto
+    if (diaReto < DIA_INICIO_RETO) diaReto = DIA_INICIO_RETO;
+    if (diaReto > DIA_FIN_RETO) diaReto = DIA_FIN_RETO;
     
     return diaReto;
   }
@@ -234,7 +323,7 @@
     
     const diaActual = getDiaRetoActual();
     
-    // Mostrar solo días desde el 75 hasta el día actual (inclusive)
+    // Llenar selector con días desde el inicio hasta el día actual (solo alcanzables)
     for (let d = DIA_INICIO_RETO; d <= diaActual; d++) {
       if (baseVideos[d]) {
         let opt = document.createElement("option");
@@ -246,7 +335,7 @@
       }
     }
     
-    // Mostrar información de días pendientes si hay atraso
+    // Mostrar días pendientes de lectura (atrasos)
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     const diasNoLeidos = [];
     for (let d = DIA_INICIO_RETO; d < diaActual; d++) {
@@ -344,7 +433,7 @@
 
   function finalizarEnvio() {
     actualizarVideos();
-    // Actualizar también el contador de días pendientes
+    // Actualizar el mensaje de días pendientes
     const diaActual = getDiaRetoActual();
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     const diasNoLeidos = [];
