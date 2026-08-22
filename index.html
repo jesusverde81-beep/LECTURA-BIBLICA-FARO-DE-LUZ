@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -99,16 +100,16 @@
   let timerActivo = false;
   const MI_CONTRASEÑA = "biblia"; 
   const DIA_INICIO_RETO = 75;
-  const DIA_FIN_RETO = 230;   // Ampliado hasta el día 230
+  const DIA_FIN_RETO = 260;   // Actualizado hasta el día 260
 
-  // LISTA COMPLETA DE VIDEOS (días 75 al 230)
+  // LISTA COMPLETA DE VIDEOS (días 75 al 260)
   const baseVideos = {
     // Días 75-78
     75: "ABguF6QtcpA",
     76: "hYRdfnxfjLw",
     77: "xqY8yN4yM2w",
     78: "Hyv3spEvV-A",
-    // Días 79-144 (ya corregidos anteriormente)
+    // Días 79-144
     79: "rgIJ0AORudc",
     80: "7EqY_k_jlO8",
     81: "JUeyW2BGS1s",
@@ -175,7 +176,7 @@
     142: "MqsfieIp5cA",
     143: "qOy5k1Qn3tI",
     144: "EL0LDeDDqXI",
-    // NUEVOS DÍAS 145 AL 230
+    // Días 145-230
     145: "7r1MiedJSQ4",
     146: "MM4WLl-Z7LI",
     147: "ZvtEL5hnWA0",
@@ -226,7 +227,7 @@
     192: "Kb_ixZdljh0",
     193: "hnxDtOHYrCs",
     194: "CyS12V-gO10",
-    195: "CyS12V-gO10",  // duplicado según el usuario
+    195: "CyS12V-gO10",
     196: "Po_CSvFTtnA",
     197: "zzvYMLEPZtQ",
     198: "1WHC7i8DF8U",
@@ -249,7 +250,7 @@
     215: "s4zW_4akgQE",
     216: "7lPlhdd5Sn8",
     217: "2wXPwHECaGM",
-    218: "2wXPwHECaGM",  // duplicado según el usuario
+    218: "2wXPwHECaGM",
     219: "mUnJDXTPzx8",
     220: "Wdw4IpaeTVw",
     221: "6LBJUE6yR-Y",
@@ -257,11 +258,42 @@
     223: "9VOulP5FtwU",
     224: "JaAxeNe-uVM",
     225: "R6JDcCD8mO4",
-    226: "R6JDcCD8mO4",  // duplicado según el usuario
+    226: "R6JDcCD8mO4",
     227: "z1fn14lNC2o",
     228: "jJKEiOJg7U4",
     229: "v6U9yJQX9Lw",
-    230: "gRDc-_cn87E"
+    230: "gRDc-_cn87E",
+    // NUEVOS DÍAS 231 AL 260
+    231: "gRDc-_cn87E",   // mismo que 230 (según tu enlace)
+    232: "yMAyQPLipJc",
+    233: "BpGOryTuAGo",
+    234: "PflQnoV-3Fs",
+    235: "AyyILzliOuo",
+    236: "GZwoLfVkcI4",
+    237: "nrbAxGMydU4",
+    238: "97uSwXzCU2o",
+    239: "Ya1Gy9m6QwI",
+    240: "mhm25Osn5Jg",
+    241: "Kke-1Zc_KmA",
+    242: "TC0WarYPiTc",
+    243: "TC0WarYPiTc",   // duplicado según tu lista
+    244: "WM2PziVSq5g",
+    245: "48U0eOVc-bw",
+    246: "2U4QT2wrCWo",
+    247: "GsaVb1yLcPg",
+    248: "ZFS6scC9sy8",
+    249: "6TwqdNWSN5Y",
+    250: "gSw8uB_iGps",
+    251: "iZdS4HFkA2k",
+    252: "q_90o7PyjWI",
+    253: "67huRfqN0LQ",
+    254: "khSGicotKS4",
+    255: "W3zOZI55xbo",
+    256: "IcW67MY4kt8",
+    257: "GFOWB65GhKI",
+    258: "ujdy-qqEntA",
+    259: "ocDlJGAU8Jg",
+    260: "gSu7YJQM51w"
   };
 
   // Frases motivacionales
@@ -276,18 +308,14 @@
     "❤️ Escudriñad las Escrituras"
   ];
 
-  // Calcula el número de día del reto según la fecha actual
-  // Asume que el día 75 = 16 de marzo de 2026
+  // Calcula el día del reto según la fecha actual
   function getDiaRetoActual() {
     const hoy = new Date();
-    const fechaInicio = new Date(2026, 2, 16); // 16 de marzo de 2026 (mes 2 = marzo)
+    const fechaInicio = new Date(2026, 2, 16); // 16 de marzo
     const diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
     let diaReto = DIA_INICIO_RETO + diffDias;
-    
-    // Limitar entre el inicio y el fin del reto
     if (diaReto < DIA_INICIO_RETO) diaReto = DIA_INICIO_RETO;
     if (diaReto > DIA_FIN_RETO) diaReto = DIA_FIN_RETO;
-    
     return diaReto;
   }
 
@@ -323,7 +351,6 @@
     
     const diaActual = getDiaRetoActual();
     
-    // Llenar selector con días desde el inicio hasta el día actual (solo alcanzables)
     for (let d = DIA_INICIO_RETO; d <= diaActual; d++) {
       if (baseVideos[d]) {
         let opt = document.createElement("option");
@@ -335,7 +362,6 @@
       }
     }
     
-    // Mostrar días pendientes de lectura (atrasos)
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     const diasNoLeidos = [];
     for (let d = DIA_INICIO_RETO; d < diaActual; d++) {
@@ -353,7 +379,6 @@
       infoDiv.style.display = "block";
     }
     
-    // Seleccionar el día actual por defecto
     selector.value = diaActual;
     actualizarVideos();
   }
@@ -391,7 +416,7 @@
           setTimeout(() => { 
             btn.disabled = false; 
             msg.classList.add("hidden");
-          }, 300000); // 5 minutos
+          }, 300000);
         }
       };
       contenedor.appendChild(a);
@@ -433,7 +458,6 @@
 
   function finalizarEnvio() {
     actualizarVideos();
-    // Actualizar el mensaje de días pendientes
     const diaActual = getDiaRetoActual();
     const historial = JSON.parse(localStorage.getItem("historialLecturas") || "[]");
     const diasNoLeidos = [];
